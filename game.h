@@ -1,13 +1,13 @@
 #ifndef _GAME_H_
 #define _GAME_H_
 
-#include "player.h"
 #include "peta.h"
+#include "boolean.h"
 
 /* Variable extern dibawah menyatakan variable global yang dapat di akses oleh
  * seluruh file yang meng-include "game.h", tetapi tetap harus di inisialisasi.
  */
-extern bool GAME_RUNNING;
+extern boolean GAME_RUNNING;
 
 void NewGame();
 /* Membuat Game Baru,
@@ -16,7 +16,7 @@ void NewGame();
  * Membuat 2 player baru,
  */
 
-void PlayerTurn(Player player);
+// void PlayerTurn(Player player);
 /* Mengatur bagian turn player
  */
 
