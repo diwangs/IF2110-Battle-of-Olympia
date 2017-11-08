@@ -12,6 +12,8 @@ typedef struct {
 	float Y; /* ordinat */
 } POINT;
 
+typedef POINT Point;
+
 /* *** Notasi Akses: Selektor POINT *** */
 #define Absis(P) (P).X
 #define Ordinat(P) (P).Y
