@@ -1,7 +1,7 @@
 /* File : listunit.h */
 /* ADT List dengan Double Pointer */
-/* Representasi berkait dengan address adalah pointer */
-/* infotype adalah integer */
+/* Representasi berkait dengan address_unit adalah pointer */
+/* infotypeunit adalah integer */
 
 #ifndef listunit_H
 #define listunit_H
@@ -12,116 +12,116 @@
 #define Nil NULL
 
 /* Definisi Type Data */
-typedef Unit infotype;
-typedef struct tElmtlist *address;
+typedef Unit infotypeunit;
+typedef struct tElmtlist *address_unit;
 typedef struct tElmtlist { 
-	infotype info;
-	address next;
-	address prev;
-} ElmtList;
+	infotypeunit info;
+	address_unit next;
+	address_unit prev;
+} ElmtUnitList;
 typedef struct {
-	address First;
-	address Last;
+	address_unit First;
+	address_unit Last;
 } List;
 
 /* Definisi list : */
 /* List kosong : First(L) = Nil dan Last(L) = Nil */
-/* Setiap elemen dengan address P dapat diacu Info(P), Next(P), Prev(P) */
+/* Setiap elemen dengan address_unit P dapat diacu Info(P), Next(P), Prev(P) */
 /* Elemen terakhir list: Last(L) */
 
 /* Notasi Akses */
-#define Info(P) (P)->info
-#define Next(P) (P)->next
-#define Prev(P) (P)->prev
-#define First(L) ((L).First)
-#define Last(L) ((L).Last)
+#define InfoUnit(P) (P)->info
+#define NextUnit(P) (P)->next
+#define PrevUnit(P) (P)->prev
+#define FirstUnit(L) ((L).First)
+#define LastUnit(L) ((L).Last)
 
 /* PROTOTYPE */
 /****************** TEST LIST KOSONG ******************/
-boolean IsEmpty (List L);
+boolean IsEmptyListUnit (List L);
 /* Mengirim true jika list kosong. Lihat definisi di atas. */
 
 /****************** PEMBUATAN LIST KOSONG ******************/
-void CreateEmpty (List *L);
+void CreateEmptyListUnit (List *L);
 /* I.S. L sembarang  */
 /* F.S. Terbentuk list kosong. Lihat definisi di atas. */
 
 /****************** Manajemen Memori ******************/
-address Alokasi (infotype X);
-/* Mengirimkan address hasil alokasi sebuah elemen */
-/* Jika alokasi berhasil, maka address tidak nil. */
+address_unit AlokasiListUnit (infotypeunit X);
+/* Mengirimkan address_unit hasil alokasi sebuah elemen */
+/* Jika alokasi berhasil, maka address_unit tidak nil. */
 /* Misalnya: menghasilkan P, maka Info(P)=X, Next(P)=Nil, Prev(P)=Nil */
 /* Jika alokasi gagal, mengirimkan Nil. */
-void Dealokasi (address P);
+void DealokasiListUnit (address_unit P);
 /* I.S. P terdefinisi */
 /* F.S. P dikembalikan ke sistem */
-/* Melakukan dealokasi/pengembalian address P */
+/* Melakukan dealokasi/pengembalian address_unit P */
 
 /****************** PENCARIAN SEBUAH ELEMEN LIST ******************/
-address Search (List L, infotype X);
+address_unit SearchListUnit (List L, infotypeunit X);
 /* Mencari apakah ada elemen list dengan Info(P)=X */
-/* Jika ada, mengirimkan address elemen tersebut. */
+/* Jika ada, mengirimkan address_unit elemen tersebut. */
 /* Jika tidak ada, mengirimkan Nil */
 
 /****************** PRIMITIF BERDASARKAN NILAI ******************/
 /*** PENAMBAHAN ELEMEN ***/
-void InsVFirst (List *L, infotype X);
+void InsVFirstListUnit (List *L, infotypeunit X);
 /* I.S. L mungkin kosong */
 /* F.S. Melakukan alokasi sebuah elemen dan */
 /* menambahkan elemen pertama dengan nilai X jika alokasi berhasil */
-void InsVLast (List *L, infotype X);
+void InsVLastListUnit (List *L, infotypeunit X);
 /* I.S. L mungkin kosong */
 /* F.S. Melakukan alokasi sebuah elemen dan */
 /* menambahkan elemen list di akhir: elemen terakhir yang baru */
 /* bernilai X jika alokasi berhasil. Jika alokasi gagal: I.S.= F.S. */
 
 /*** PENGHAPUSAN ELEMEN ***/
-void DelVFirst (List *L, infotype *X);
+void DelVFirstListUnit (List *L, infotypeunit *X);
 /* I.S. List L tidak kosong  */
 /* F.S. Elemen pertama list dihapus: nilai info disimpan pada X */
 /*      dan alamat elemen pertama di-dealokasi */
-void DelVLast (List *L, infotype *X);
+void DelVLastListUnit (List *L, infotypeunit *X);
 /* I.S. list tidak kosong */
 /* F.S. Elemen terakhir list dihapus: nilai info disimpan pada X */
 /*      dan alamat elemen terakhir di-dealokasi */
 
 /****************** PRIMITIF BERDASARKAN ALAMAT ******************/
 /*** PENAMBAHAN ELEMEN BERDASARKAN ALAMAT ***/
-void InsertFirst (List *L, address P);
+void InsertFirstListUnit (List *L, address_unit P);
 /* I.S. Sembarang, P sudah dialokasi  */
-/* F.S. Menambahkan elemen ber-address P sebagai elemen pertama */
-void InsertLast (List *L, address P);
+/* F.S. Menambahkan elemen ber-address_unit P sebagai elemen pertama */
+void InsertLastListUnit (List *L, address_unit P);
 /* I.S. Sembarang, P sudah dialokasi  */
 /* F.S. P ditambahkan sebagai elemen terakhir yang baru */
-void InsertAfter (List *L, address P, address Prec);
+void InsertAfterListUnit (List *L, address_unit P, address_unit Prec);
 /* I.S. Prec pastilah elemen list; P sudah dialokasi  */
 /* F.S. Insert P sebagai elemen sesudah elemen beralamat Prec */
-void InsertBefore (List *L, address P, address Succ);
+void InsertBeforeListUnit (List *L, address_unit P, address_unit Succ);
 /* I.S. Succ pastilah elemen list; P sudah dialokasi  */
 /* F.S. Insert P sebagai elemen sebelum elemen beralamat Succ */
 
 /*** PENGHAPUSAN SEBUAH ELEMEN ***/
-void DelFirst (List *L, address *P);
+void DelFirstListUnit (List *L, address_unit *P);
 /* I.S. List tidak kosong */
 /* F.S. P adalah alamat elemen pertama list sebelum penghapusan */
 /*      Elemen list berkurang satu (mungkin menjadi kosong) */
 /* First element yg baru adalah suksesor elemen pertama yang lama */
-void DelLast (List *L, address *P);
+void DelLastListUnit (List *L, address_unit *P);
 /* I.S. List tidak kosong */
 /* F.S. P adalah alamat elemen terakhir list sebelum penghapusan  */
 /*      Elemen list berkurang satu (mungkin menjadi kosong) */
 /* Last element baru adalah predesesor elemen pertama yg lama, jika ada */
-void DelP (List *L, infotype X);
+void DelPListUnit (List *L, infotypeunit X);
 /* I.S. Sembarang */
-/* F.S. Jika ada elemen list beraddress P, dengan Info(P)=X  */
+/* F.S. Jika ada elemen list beraddress_unit P, dengan Info(P)=X  */
 /* maka P dihapus dari list dan didealokasi */
 /* Jika tidak ada elemen list dengan Info(P)=X, maka list tetap */
 /* List mungkin menjadi kosong karena penghapusan */
-void DelAfter (List *L, address *Pdel, address Prec);
+void DelAfterListUnit (List *L, address_unit *Pdel, address_unit Prec);
 /* I.S. List tidak kosong. Prec adalah anggota list. */
 /* F.S. Menghapus Next(Prec): */
 /*      Pdel adalah alamat elemen list yang dihapus  */
-void DelBefore (List *L, address *Pdel, address Succ);
+void DelBeforeListUnit (List *L, address_unit *Pdel, address_unit Succ);
 /* I.S. List tidak kosong. Succ adalah anggota list. */
 /* F.S. Menghapus Prev(Succ): */
 /*      Pdel adalah alamat elemen list yang dihapus  */

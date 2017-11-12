@@ -4,67 +4,67 @@
 
 /* PROTOTYPE */
 /****************** TEST LIST KOSONG ******************/
-boolean IsEmpty (List L)
+boolean IsEmptyListVillage (List L)
 /* Mengirim true jika list kosong. Lihat definisi di atas. */
 {
-	return First(L) == Nil && Last(L) == Nil;
+	return FirstVillage(L) == Nil && LastVillage(L) == Nil;
 }
 
 /****************** PEMBUATAN LIST KOSONG ******************/
-void CreateEmpty (List *L)
+void CreateEmptyListVillage (List *L)
 /* I.S. L sembarang  */
 /* F.S. Terbentuk list kosong. Lihat definisi di atas. */
 {
-	First(*L) = Nil;
-	Last(*L) = Nil;
+	FirstVillage(*L) = Nil;
+	LastVillage(*L) = Nil;
 }
 /****************** Manajemen Memori ******************/
-address Alokasi (infotype X)
-/* Mengirimkan address hasil alokasi sebuah elemen */
-/* Jika alokasi berhasil, maka address tidak Nil. */
-/* Misalnya: menghasilkan P, maka Info(P)=X, Next(P)=Nil, Prev(P)=Nil */
+address_village AlokasiListVillage (infotypevillage X)
+/* Mengirimkan address_village hasil alokasi sebuah elemen */
+/* Jika alokasi berhasil, maka address_village tidak Nil. */
+/* Misalnya: menghasilkan P, maka InfoVillage(P)=X, NextVillage(P)=Nil, PrevVillage(P)=Nil */
 /* Jika alokasi gagal, mengirimkan Nil. */
 {
-	address P;
-	P = malloc(sizeof(ElmtList));
+	address_village P;
+	P = malloc(sizeof(ElmtVillageList));
 
 	if (P != Nil) {
-		Info(P) = X;
-		Next(P) = Nil;
-		Prev(P) = Nil;
+		InfoVillage(P) = X;
+		NextVillage(P) = Nil;
+		PrevVillage(P) = Nil;
 	}
 
 	return P;
 }
-void Dealokasi (address P)
+void DealokasiListVillage (address_village P)
 /* I.S. P terdefinisi */
 /* F.S. P dikembalikan ke sistem */
-/* Melakukan dealokasi/pengembalian address P */
+/* Melakukan dealokasi/pengembalian address_village P*/
 {
 	free(P);
 }
 
 /****************** PENCARIAN SEBUAH ELEMEN LIST ******************/
-address Search (List L, infotype X)
-/* Mencari apakah ada elemen list dengan Info(P)=X */
-/* Jika ada, mengirimkan address elemen tersebut. */
+address_village SearchListVillage (List L, infotypevillage X)
+/* Mencari apakah ada elemen list dengan InfoVillage(P)=X */
+/* Jika ada, mengirimkan address_village elemen tersebut. */
 /* Jika tidak ada, mengirimkan Nil */
 {
-	if (IsEmpty(L)) {
+	if (IsEmptyListVillage(L)) {
 		return Nil;
 	}
 
-	address P;
-	P = First(L);
+	address_village P;
+	P = FirstVillage(L);
 
-	while (Next(P) != Nil) {
-		if (IsEQVillage(Info(P), X)) {
+	while (NextVillage(P) != Nil) {
+		if (IsEQVillage(InfoVillage(P), X)) {
 			return P;
 		}
-		P = Next(P);
+		P = NextVillage(P);
 	}
 
-	if (IsEQVillage(Info(P), X)) {
+	if (IsEQVillage(InfoVillage(P), X)) {
 		return P;
 	}
 
@@ -73,235 +73,235 @@ address Search (List L, infotype X)
 
 /****************** PRIMITIF BERDASARKAN NilAI ******************/
 /*** PENAMBAHAN ELEMEN ***/
-void InsVFirst (List *L, infotype X)
+void InsVFirstListVillage (List *L, infotypevillage X)
 /* I.S. L mungkin kosong */
 /* F.S. Melakukan alokasi sebuah elemen dan */
 /* menambahkan elemen pertama dengan Nilai X jika alokasi berhasil */
 {
-	address P, P2;
-	P = Alokasi(X);
+	address_village P, P2;
+	P = AlokasiListVillage(X);
 
-	if (IsEmpty(*L)) {
-		First(*L) = P;
-		Last(*L) = P;
+	if (IsEmptyListVillage(*L)) {
+		FirstVillage(*L) = P;
+		LastVillage(*L) = P;
 		return;
 	}
 
-	P2 = First(*L);
-	First(*L) = P;
-	Next(P) = P2;
-	Prev(P2) = P;
+	P2 = FirstVillage(*L);
+	FirstVillage(*L) = P;
+	NextVillage(P) = P2;
+	PrevVillage(P2) = P;
 }
-void InsVLast (List *L, infotype X)
+void InsVLastListVillage (List *L, infotypevillage X)
 /* I.S. L mungkin kosong */
 /* F.S. Melakukan alokasi sebuah elemen dan */
 /* menambahkan elemen list di akhir: elemen terakhir yang baru */
 /* berNilai X jika alokasi berhasil. Jika alokasi gagal: I.S.= F.S. */
 {
-	if (IsEmpty(*L)) {
-		InsVFirst(L, X);
+	if (IsEmptyListVillage(*L)) {
+		InsVFirstListVillage(L, X);
 		return;
 	}
 
-	address P, P2;
-	P = Alokasi(X);
-	P2 = Last(*L);
-	Next(P2) = P;
-	Prev(P) = P2;
-	Last(*L) = P;
+	address_village P, P2;
+	P = AlokasiListVillage(X);
+	P2 = LastVillage(*L);
+	NextVillage(P2) = P;
+	PrevVillage(P) = P2;
+	LastVillage(*L) = P;
 }
 
 /*** PENGHAPUSAN ELEMEN ***/
-void DelVFirst (List *L, infotype *X)
+void DelVFirstListVillage (List *L, infotypevillage *X)
 /* I.S. List L tidak kosong  */
 /* F.S. Elemen pertama list dihapus: Nilai info disimpan pada X */
 /*      dan alamat elemen pertama di-dealokasi */
 {
-	address P;
-	P = First(*L);
-	*X = Info(P);
+	address_village P;
+	P = FirstVillage(*L);
+	*X = InfoVillage(P);
 
-	First(*L) = Next(P);
+	FirstVillage(*L) = NextVillage(P);
 
-	if (Next(P) != Nil) {
-		Prev(First(*L)) = Nil;
+	if (NextVillage(P) != Nil) {
+		PrevVillage(FirstVillage(*L)) = Nil;
 	} else {
-		Last(*L) = Nil;
+		LastVillage(*L) = Nil;
 	}
 
-	Dealokasi(P);
+	DealokasiListVillage(P);
 }
-void DelVLast (List *L, infotype *X)
+void DelVLastListVillage (List *L, infotypevillage *X)
 /* I.S. list tidak kosong */
 /* F.S. Elemen terakhir list dihapus: Nilai info disimpan pada X */
 /*      dan alamat elemen terakhir di-dealokasi */
 {
-	address P;
-	P = Last(*L);
-	*X = Info(P);
-	Last(*L) = Prev(P);
-	if (Prev(P) != Nil) {
-		Next(Prev(P)) = Nil;
+	address_village P;
+	P = LastVillage(*L);
+	*X = InfoVillage(P);
+	LastVillage(*L) = PrevVillage(P);
+	if (PrevVillage(P) != Nil) {
+		NextVillage(PrevVillage(P)) = Nil;
 	} else {
-		First(*L) = Nil;
+		FirstVillage(*L) = Nil;
 	}
 
-	Dealokasi(P);
+	DealokasiListVillage(P);
 }
 
 /****************** PRIMITIF BERDASARKAN ALAMAT ******************/
 /*** PENAMBAHAN ELEMEN BERDASARKAN ALAMAT ***/
-void InsertFirst (List *L, address P)
+void InsertFirstListVillage (List *L, address_village P)
 /* I.S. Sembarang, P sudah dialokasi  */
-/* F.S. Menambahkan elemen ber-address P sebagai elemen pertama */
+/* F.S. Menambahkan elemen ber-address_village P sebagai elemen pertama */
 {
-	if (IsEmpty(*L)) {
-		First(*L) = P;
-		Last(*L) = P;
+	if (IsEmptyListVillage(*L)) {
+		FirstVillage(*L) = P;
+		LastVillage(*L) = P;
 		return;
 	}
 
-	address P2;
-	P2 = First(*L);
-	First(*L) = P;
-	Next(P) = P2;
-	Prev(P2) = P;
+	address_village P2;
+	P2 = FirstVillage(*L);
+	FirstVillage(*L) = P;
+	NextVillage(P) = P2;
+	PrevVillage(P2) = P;
 }
-void InsertLast (List *L, address P)
+void InsertLastListVillage (List *L, address_village P)
 /* I.S. Sembarang, P sudah dialokasi  */
 /* F.S. P ditambahkan sebagai elemen terakhir yang baru */
 {
-	if (IsEmpty(*L)) {
-		First(*L) = P;
-		Last(*L) = P;
+	if (IsEmptyListVillage(*L)) {
+		FirstVillage(*L) = P;
+		LastVillage(*L) = P;
 		return;
 	}
 
-	address P2;
-	P2 = Last(*L);
-	Last(*L) = P;
-	Next(P2) = P;
-	Prev(P) = P2;
+	address_village P2;
+	P2 = LastVillage(*L);
+	LastVillage(*L) = P;
+	NextVillage(P2) = P;
+	PrevVillage(P) = P2;
 }
-void InsertAfter (List *L, address P, address Prec)
+void InsertAfterListVillage (List *L, address_village P, address_village Prec)
 /* I.S. Prec pastilah elemen list; P sudah dialokasi  */
 /* F.S. Insert P sebagai elemen sesudah elemen beralamat Prec */
 {
-	address P2;
-	P2 = Next(Prec);
-	Next(Prec) = P;
-	Prev(P) = Prec;
-	Next(P) = P2;
+	address_village P2;
+	P2 = NextVillage(Prec);
+	NextVillage(Prec) = P;
+	PrevVillage(P) = Prec;
+	NextVillage(P) = P2;
 	if (P2 != Nil) {
-		Prev(P2) = P;
+		PrevVillage(P2) = P;
 	} else {
-		Last(*L) = (P);
+		LastVillage(*L) = (P);
 	}
 }
-void InsertBefore (List *L, address P, address Succ)
+void InsertBeforeListVillage (List *L, address_village P, address_village Succ)
 /* I.S. Succ pastilah elemen list; P sudah dialokasi  */
 /* F.S. Insert P sebagai elemen sebelum elemen beralamat Succ */
 {
-	address P2;
-	P2 = Prev(Succ);
-	Next(P) = Succ;
-	Prev(Succ) = P;
-	Prev(P) = P2;
+	address_village P2;
+	P2 = PrevVillage(Succ);
+	NextVillage(P) = Succ;
+	PrevVillage(Succ) = P;
+	PrevVillage(P) = P2;
 	if (P2 != Nil) {
-		Next(P2) = P;
+		NextVillage(P2) = P;
 	} else {
-		First(*L) = P;
+		FirstVillage(*L) = P;
 	}
 
 }
 
 /*** PENGHAPUSAN SEBUAH ELEMEN ***/
-void DelFirst (List *L, address *P)
+void DelFirstListVillage (List *L, address_village *P)
 /* I.S. List tidak kosong */
 /* F.S. P adalah alamat elemen pertama list sebelum penghapusan */
 /*      Elemen list berkurang satu (mungkin menjadi kosong) */
 /* First element yg baru adalah suksesor elemen pertama yang lama */
 {
-	*P = First(*L);
-	if (Next(*P) != Nil) {
-		Prev(Next(*P)) = Nil;
+	*P = FirstVillage(*L);
+	if (NextVillage(*P) != Nil) {
+		PrevVillage(NextVillage(*P)) = Nil;
 	} else {
-		Last(*L) = Nil;
+		LastVillage(*L) = Nil;
 	}
-	First(*L) = Next(*P);
+	FirstVillage(*L) = NextVillage(*P);
 }
-void DelLast (List *L, address *P)
+void DelLastListVillage (List *L, address_village *P)
 /* I.S. List tidak kosong */
 /* F.S. P adalah alamat elemen terakhir list sebelum penghapusan  */
 /*      Elemen list berkurang satu (mungkin menjadi kosong) */
 /* Last element baru adalah predesesor elemen pertama yg lama, jika ada */
 {
-	*P = Last(*L);
-	if (Prev(*P) != Nil) {
-		Next(Prev(*P)) = Nil;
+	*P = LastVillage(*L);
+	if (PrevVillage(*P) != Nil) {
+		NextVillage(PrevVillage(*P)) = Nil;
 	} else {
-		First(*L) = Nil;
+		FirstVillage(*L) = Nil;
 	}
-	Last(*L) = Prev(*P);
+	LastVillage(*L) = PrevVillage(*P);
 }
-void DelP (List *L, infotype X)
+void DelPListVillage (List *L, infotypevillage X)
 /* I.S. Sembarang */
-/* F.S. Jika ada elemen list beraddress P, dengan Info(P)=X  */
+/* F.S. Jika ada elemen list beraddress_village P, dengan InfoVillage(P)=X  */
 /* maka P dihapus dari list dan didealokasi */
-/* Jika tidak ada elemen list dengan Info(P)=X, maka list tetap */
+/* Jika tidak ada elemen list dengan InfoVillage(P)=X, maka list tetap */
 /* List mungkin menjadi kosong karena penghapusan */
 {
-	address P;
-	P = Search(*L, X);
+	address_village P;
+	P = SearchListVillage(*L, X);
 
 	if (P == Nil) {
 		return;
 	}
 
-	if (Prev(P) == Next(P)) {
-		First(*L) = Nil;
-		Last(*L) = Nil;
+	if (PrevVillage(P) == NextVillage(P)) {
+		FirstVillage(*L) = Nil;
+		LastVillage(*L) = Nil;
 		return;
 	}
 
-	if (Prev(P) == Nil && Next(P) != Nil) {
-		Prev(Next(P)) = Nil;
-		First(*L) = Next(P);
+	if (PrevVillage(P) == Nil && NextVillage(P) != Nil) {
+		PrevVillage(NextVillage(P)) = Nil;
+		FirstVillage(*L) = NextVillage(P);
 		return;
 	}
 
-	if (Prev(P) != Nil && Next(P) == Nil) {
-		Next(Prev(P)) = Nil;
-		Last(*L) = Prev(P);
+	if (PrevVillage(P) != Nil && NextVillage(P) == Nil) {
+		NextVillage(PrevVillage(P)) = Nil;
+		LastVillage(*L) = PrevVillage(P);
 		return;
 	}
 
-	Next(Prev(P)) = Next(P);
-	Prev(Next(P)) = Prev(P);
+	NextVillage(PrevVillage(P)) = NextVillage(P);
+	PrevVillage(NextVillage(P)) = PrevVillage(P);
 }
-void DelAfter (List *L, address *Pdel, address Prec)
+void DelAfterListVillage (List *L, address_village *Pdel, address_village Prec)
 /* I.S. List tidak kosong. Prec adalah anggota list. */
-/* F.S. Menghapus Next(Prec): */
+/* F.S. Menghapus NextVillage(Prec): */
 /*      Pdel adalah alamat elemen list yang dihapus  */
 {
-	*Pdel = Next(Prec);
-	Next(Prec) = Next(Next(Prec));
-	if (Next(Prec) != Nil) {
-		Prev(Next(Prec)) = Prec;
+	*Pdel = NextVillage(Prec);
+	NextVillage(Prec) = NextVillage(NextVillage(Prec));
+	if (NextVillage(Prec) != Nil) {
+		PrevVillage(NextVillage(Prec)) = Prec;
 	} else {
-		Last(*L) = Prec;
+		LastVillage(*L) = Prec;
 	}
 }
-void DelBefore (List *L, address *Pdel, address Succ)
+void DelBeforeListVillage (List *L, address_village *Pdel, address_village Succ)
 /* I.S. List tidak kosong. Succ adalah anggota list. */
-/* F.S. Menghapus Prev(Succ): */
+/* F.S. Menghapus PrevVillage(Succ): */
 /*      Pdel adalah alamat elemen list yang dihapus  */
 {
-	*Pdel = Prev(Succ);
-	Prev(Succ) = Prev(Prev(Succ));
-	if (Prev(Succ) != Nil) {
-		Next(Prev(Succ)) = Succ;
+	*Pdel = PrevVillage(Succ);
+	PrevVillage(Succ) = PrevVillage(PrevVillage(Succ));
+	if (PrevVillage(Succ) != Nil) {
+		NextVillage(PrevVillage(Succ)) = Succ;
 	} else {
-		First(*L) = Succ;
+		FirstVillage(*L) = Succ;
 	}
 }
