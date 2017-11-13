@@ -22,4 +22,38 @@ void MakePeta(int nb, int nk, Peta *peta){
 
 void PrintPetaNormal(Peta peta){
     printf("B %d K %d\n", peta.n_brs, peta.n_kol);
+    printf("    ");
+    for(int i = 0; i < peta.n_kol; i++)
+        printf("%3d ", i);
+    printf("\n");
+    printf("   *");
+    for(int i = 0; i < peta.n_kol; i++)
+        printf("****");
+    printf("\n");
+    for(int i = 0; i < peta.n_brs; i++){
+        // Cetak baris pertama dan bangunan
+        printf("   *");
+        for(int j = 0; j < peta.n_kol; j++)
+            printf("   *");
+        printf("\n");
+
+        // Cetak nomor baris dan unit
+        printf("%2d *", i);
+        for(int j = 0; j < peta.n_kol; j++)
+            printf("   *");
+        printf("\n");
+        
+        // cetak baris terakhir dan range jika perlu
+        printf("   *");
+        for(int j = 0; j < peta.n_kol; j++)
+            printf("   *");
+        printf("\n");
+
+        // cetak garis
+        printf("   *");
+        for(int j = 0; j < peta.n_kol; j++)
+            printf("****");
+        printf("\n");
+    }
+
 }
