@@ -3,17 +3,17 @@
 #include <stdlib.h>
 
 /* PROTOTYPE */
-/****************** TEST LIST KOSONG ******************/
-boolean IsEmptyListUnit (List L)
-/* Mengirim true jika list kosong. Lihat definisi di atas. */
+/****************** TEST ListUnit KOSONG ******************/
+boolean IsEmptyListUnit (ListUnit L)
+/* Mengirim true jika ListUnit kosong. Lihat definisi di atas. */
 {
 	return FirstUnit(L) == Nil && LastUnit(L) == Nil;
 }
 
-/****************** PEMBUATAN LIST KOSONG ******************/
-void CreateEmptyListUnit (List *L)
+/****************** PEMBUATAN ListUnit KOSONG ******************/
+void CreateEmptyListUnit (ListUnit *L)
 /* I.S. L sembarang  */
-/* F.S. Terbentuk list kosong. Lihat definisi di atas. */
+/* F.S. Terbentuk ListUnit kosong. Lihat definisi di atas. */
 {
 	FirstUnit(*L) = Nil;
 	LastUnit(*L) = Nil;
@@ -44,9 +44,9 @@ void DealokasiListUnit (address_unit P)
 	free(P);
 }
 
-/****************** PENCARIAN SEBUAH ELEMEN LIST ******************/
-address_unit SearchListUnit (List L, infotypeunit X)
-/* Mencari apakah ada elemen list dengan InfoUnit(P)=X */
+/****************** PENCARIAN SEBUAH ELEMEN ListUnit ******************/
+address_unit SearchListUnit (ListUnit L, infotypeunit X)
+/* Mencari apakah ada elemen ListUnit dengan InfoUnit(P)=X */
 /* Jika ada, mengirimkan address_unit elemen tersebut. */
 /* Jika tidak ada, mengirimkan Nil */
 {
@@ -73,7 +73,7 @@ address_unit SearchListUnit (List L, infotypeunit X)
 
 /****************** PRIMITIF BERDASARKAN NilAI ******************/
 /*** PENAMBAHAN ELEMEN ***/
-void InsVFirstListUnit (List *L, infotypeunit X)
+void InsVFirstListUnit (ListUnit *L, infotypeunit X)
 /* I.S. L mungkin kosong */
 /* F.S. Melakukan alokasi sebuah elemen dan */
 /* menambahkan elemen pertama dengan Nilai X jika alokasi berhasil */
@@ -92,10 +92,10 @@ void InsVFirstListUnit (List *L, infotypeunit X)
 	NextUnit(P) = P2;
 	PrevUnit(P2) = P;
 }
-void InsVLastListUnit (List *L, infotypeunit X)
+void InsVLastListUnit (ListUnit *L, infotypeunit X)
 /* I.S. L mungkin kosong */
 /* F.S. Melakukan alokasi sebuah elemen dan */
-/* menambahkan elemen list di akhir: elemen terakhir yang baru */
+/* menambahkan elemen ListUnit di akhir: elemen terakhir yang baru */
 /* berNilai X jika alokasi berhasil. Jika alokasi gagal: I.S.= F.S. */
 {
 	if (IsEmptyListUnit(*L)) {
@@ -112,9 +112,9 @@ void InsVLastListUnit (List *L, infotypeunit X)
 }
 
 /*** PENGHAPUSAN ELEMEN ***/
-void DelVFirstListUnit (List *L, infotypeunit *X)
-/* I.S. List L tidak kosong  */
-/* F.S. Elemen pertama list dihapus: Nilai info disimpan pada X */
+void DelVFirstListUnit (ListUnit *L, infotypeunit *X)
+/* I.S. ListUnit L tidak kosong  */
+/* F.S. Elemen pertama ListUnit dihapus: Nilai info disimpan pada X */
 /*      dan alamat elemen pertama di-dealokasi */
 {
 	address_unit P;
@@ -131,9 +131,9 @@ void DelVFirstListUnit (List *L, infotypeunit *X)
 
 	DealokasiListUnit(P);
 }
-void DelVLastListUnit (List *L, infotypeunit *X)
-/* I.S. list tidak kosong */
-/* F.S. Elemen terakhir list dihapus: Nilai info disimpan pada X */
+void DelVLastListUnit (ListUnit *L, infotypeunit *X)
+/* I.S. ListUnit tidak kosong */
+/* F.S. Elemen terakhir ListUnit dihapus: Nilai info disimpan pada X */
 /*      dan alamat elemen terakhir di-dealokasi */
 {
 	address_unit P;
@@ -151,7 +151,7 @@ void DelVLastListUnit (List *L, infotypeunit *X)
 
 /****************** PRIMITIF BERDASARKAN ALAMAT ******************/
 /*** PENAMBAHAN ELEMEN BERDASARKAN ALAMAT ***/
-void InsertFirstListUnit (List *L, address_unit P)
+void InsertFirstListUnit (ListUnit *L, address_unit P)
 /* I.S. Sembarang, P sudah dialokasi  */
 /* F.S. Menambahkan elemen ber-address_unit P sebagai elemen pertama */
 {
@@ -167,7 +167,7 @@ void InsertFirstListUnit (List *L, address_unit P)
 	NextUnit(P) = P2;
 	PrevUnit(P2) = P;
 }
-void InsertLastListUnit (List *L, address_unit P)
+void InsertLastListUnit (ListUnit *L, address_unit P)
 /* I.S. Sembarang, P sudah dialokasi  */
 /* F.S. P ditambahkan sebagai elemen terakhir yang baru */
 {
@@ -183,7 +183,7 @@ void InsertLastListUnit (List *L, address_unit P)
 	NextUnit(P2) = P;
 	PrevUnit(P) = P2;
 }
-void InsertAfterListUnit (List *L, address_unit P, address_unit Prec)
+void InsertAfterListUnit (ListUnit *L, address_unit P, address_unit Prec)
 /* I.S. Prec pastilah elemen list; P sudah dialokasi  */
 /* F.S. Insert P sebagai elemen sesudah elemen beralamat Prec */
 {
@@ -198,7 +198,7 @@ void InsertAfterListUnit (List *L, address_unit P, address_unit Prec)
 		LastUnit(*L) = (P);
 	}
 }
-void InsertBeforeListUnit (List *L, address_unit P, address_unit Succ)
+void InsertBeforeListUnit (ListUnit *L, address_unit P, address_unit Succ)
 /* I.S. Succ pastilah elemen list; P sudah dialokasi  */
 /* F.S. Insert P sebagai elemen sebelum elemen beralamat Succ */
 {
@@ -216,10 +216,10 @@ void InsertBeforeListUnit (List *L, address_unit P, address_unit Succ)
 }
 
 /*** PENGHAPUSAN SEBUAH ELEMEN ***/
-void DelFirstListUnit (List *L, address_unit *P)
-/* I.S. List tidak kosong */
-/* F.S. P adalah alamat elemen pertama list sebelum penghapusan */
-/*      Elemen list berkurang satu (mungkin menjadi kosong) */
+void DelFirstListUnit (ListUnit *L, address_unit *P)
+/* I.S. ListUnit tidak kosong */
+/* F.S. P adalah alamat elemen pertama ListUnit sebelum penghapusan */
+/*      Elemen ListUnit berkurang satu (mungkin menjadi kosong) */
 /* First element yg baru adalah suksesor elemen pertama yang lama */
 {
 	*P = FirstUnit(*L);
@@ -230,10 +230,10 @@ void DelFirstListUnit (List *L, address_unit *P)
 	}
 	FirstUnit(*L) = NextUnit(*P);
 }
-void DelLastListUnit (List *L, address_unit *P)
-/* I.S. List tidak kosong */
-/* F.S. P adalah alamat elemen terakhir list sebelum penghapusan  */
-/*      Elemen list berkurang satu (mungkin menjadi kosong) */
+void DelLastListUnit (ListUnit *L, address_unit *P)
+/* I.S. ListUnit tidak kosong */
+/* F.S. P adalah alamat elemen terakhir ListUnit sebelum penghapusan  */
+/*      Elemen ListUnit berkurang satu (mungkin menjadi kosong) */
 /* Last element baru adalah predesesor elemen pertama yg lama, jika ada */
 {
 	*P = LastUnit(*L);
@@ -244,12 +244,12 @@ void DelLastListUnit (List *L, address_unit *P)
 	}
 	LastUnit(*L) = PrevUnit(*P);
 }
-void DelPListUnit (List *L, infotypeunit X)
+void DelPListUnit (ListUnit *L, infotypeunit X)
 /* I.S. Sembarang */
-/* F.S. Jika ada elemen list beraddress_unit P, dengan InfoUnit(P)=X  */
-/* maka P dihapus dari list dan didealokasi */
-/* Jika tidak ada elemen list dengan InfoUnit(P)=X, maka list tetap */
-/* List mungkin menjadi kosong karena penghapusan */
+/* F.S. Jika ada elemen ListUnit beraddress_unit P, dengan InfoUnit(P)=X  */
+/* maka P dihapus dari ListUnit dan didealokasi */
+/* Jika tidak ada elemen ListUnit dengan InfoUnit(P)=X, maka ListUnit tetap */
+/* ListUnit mungkin menjadi kosong karena penghapusan */
 {
 	address_unit P;
 	P = SearchListUnit(*L, X);
@@ -279,10 +279,10 @@ void DelPListUnit (List *L, infotypeunit X)
 	NextUnit(PrevUnit(P)) = NextUnit(P);
 	PrevUnit(NextUnit(P)) = PrevUnit(P);
 }
-void DelAfterListUnit (List *L, address_unit *Pdel, address_unit Prec)
-/* I.S. List tidak kosong. Prec adalah anggota list. */
+void DelAfterListUnit (ListUnit *L, address_unit *Pdel, address_unit Prec)
+/* I.S. ListUnit tidak kosong. Prec adalah anggota list. */
 /* F.S. Menghapus NextUnit(Prec): */
-/*      Pdel adalah alamat elemen list yang dihapus  */
+/*      Pdel adalah alamat elemen ListUnit yang dihapus  */
 {
 	*Pdel = NextUnit(Prec);
 	NextUnit(Prec) = NextUnit(NextUnit(Prec));
@@ -292,10 +292,10 @@ void DelAfterListUnit (List *L, address_unit *Pdel, address_unit Prec)
 		LastUnit(*L) = Prec;
 	}
 }
-void DelBeforeListUnit (List *L, address_unit *Pdel, address_unit Succ)
-/* I.S. List tidak kosong. Succ adalah anggota list. */
+void DelBeforeListUnit (ListUnit *L, address_unit *Pdel, address_unit Succ)
+/* I.S. ListUnit tidak kosong. Succ adalah anggota list. */
 /* F.S. Menghapus PrevUnit(Succ): */
-/*      Pdel adalah alamat elemen list yang dihapus  */
+/*      Pdel adalah alamat elemen ListUnit yang dihapus  */
 {
 	*Pdel = PrevUnit(Succ);
 	PrevUnit(Succ) = PrevUnit(PrevUnit(Succ));
