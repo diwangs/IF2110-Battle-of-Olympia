@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include <string.h>
 
-void save_units(List units)
+void save_units(ListUnit units)
 {
 	/* Menyimpan data tentang semua unit dalam list units ke dalam file */
 	

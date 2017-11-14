@@ -6,7 +6,7 @@
 #include "village.h"
 #include "listvillage.h"
 
-void save_units(List units);
+void save_units(ListUnit units);
 /* Menyimpan data tentang semua unit dalam list units ke dalam file */
 
 void save_villages(ListVillage villages);
