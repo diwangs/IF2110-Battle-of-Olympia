@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "peta.h"
 #include "game.h"
+#include "player.h"
 
 void NewGame(){
     int brs_peta, kol_peta;
@@ -12,4 +13,7 @@ void NewGame(){
 
     MakePeta(brs_peta, kol_peta, &PETA);
     PrintPetaNormal(PETA);
+
+    // inisialisasi pemain
+    InitializePlayer(&PLAYER1, 'R');
 }
