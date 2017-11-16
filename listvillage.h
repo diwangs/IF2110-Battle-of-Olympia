@@ -12,7 +12,7 @@
 #define Nil NULL
 
 /* Definisi Type Data */
-typedef Village infotypevillage;
+typedef Village * infotypevillage;
 typedef struct tElmtlistVillage * address_village;
 typedef struct tElmtlistVillage {
 	infotypevillage info;
