@@ -58,13 +58,13 @@ address_unit SearchListUnit (ListUnit L, infotypeunit X)
 	P = FirstUnit(L);
 
 	while (NextUnit(P) != Nil) {
-		if (IsEQUnit(InfoUnit(P), X)) {
+		if (InfoUnit(P) == X) {
 			return P;
 		}
 		P = NextUnit(P);
 	}
 
-	if (IsEQUnit(InfoUnit(P), X)) {
+	if (InfoUnit(P) == X) {
 		return P;
 	}
 

@@ -58,13 +58,13 @@ address_village SearchListVillage (ListVillage L, infotypevillage X)
 	P = FirstVillage(L);
 
 	while (NextVillage(P) != Nil) {
-		if (IsEQVillage(InfoVillage(P), X)) {
+		if (InfoVillage(P) == X) {
 			return P;
 		}
 		P = NextVillage(P);
 	}
 
-	if (IsEQVillage(InfoVillage(P), X)) {
+	if (InfoVillage(P) == X) {
 		return P;
 	}
 

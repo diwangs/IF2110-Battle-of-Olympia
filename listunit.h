@@ -12,7 +12,7 @@
 #define Nil NULL
 
 /* Definisi Type Data */
-typedef Unit infotypeunit;
+typedef Unit * infotypeunit;
 typedef struct tElmtListUnit *address_unit;
 typedef struct tElmtListUnit {
 	infotypeunit info;
