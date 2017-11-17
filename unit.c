@@ -1,11 +1,13 @@
 #include "unit.h"
 
+typedef struct tPlayer Player;
+
 /* Constructor */
 Unit MakeUnit(int max_health, int health, 
     int max_movp, int movp, 
     char attack_type, boolean can_attack, 
     Point coordinate, int price, 
-    boolean is_dead, char * type)
+    boolean is_dead, char * type, Player * owner)
 {
     Unit u1;
     SetUnitMaxHealth(&u1, max_health);
@@ -18,6 +20,7 @@ Unit MakeUnit(int max_health, int health,
     SetUnitPrice(&u1, price);
     SetUnitIsDead(&u1, is_dead);
     SetUnitType(&u1, type);
+    SetUnitOwner(&u1, owner);
 
     return u1;
 }
@@ -79,6 +82,11 @@ char * GetUnitType(Unit unit)
     return unit.type;
 }
 
+Player * GetUnitOwner(Unit unit)
+{
+    return unit.owner;
+}
+
 /* Setter */
 
 void SetUnitMaxHealth(Unit * unit, int max_health)
@@ -136,6 +144,11 @@ void SetUnitType(Unit * unit, char * type)
     unit->type = type;
 }
 
+void SetUnitOwner(Unit * unit, Player * owner)
+{
+    unit->owner = owner;
+}
+
 /* Misc Functions */
 
 Unit CopyUnit(Unit unit, Point coordinate)
@@ -152,6 +165,7 @@ Unit CopyUnit(Unit unit, Point coordinate)
         , GetUnitPrice(unit)
         , GetUnitIsDead(unit)
         , GetUnitType(unit)
+        , GetUnitOwner(unit)
     );
 
     return u1;
@@ -181,5 +195,6 @@ boolean IsEQUnit(Unit u1, Unit u2)
         GetUnitMovePoint(u1) == GetUnitMovePoint(u2) &&
         GetUnitMaxHealth(u1) == GetUnitMaxHealth(u2) &&
         GetUnitType(u1) == GetUnitType(u2) &&
-        GetUnitMaxMovePoint(u1) == GetUnitMaxMovePoint(u2);
+        GetUnitMaxMovePoint(u1) == GetUnitMaxMovePoint(u2) &&
+        GetUnitOwner(u1) == GetUnitOwner(u2);
 }

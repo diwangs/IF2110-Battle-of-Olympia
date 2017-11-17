@@ -1,7 +1,6 @@
 #ifndef _GAME_H_
 #define _GAME_H_
 
-#include "peta.h"
 #include "boolean.h"
 
 /* Variable extern dibawah menyatakan variable global yang dapat di akses oleh

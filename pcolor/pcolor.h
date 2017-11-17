@@ -26,3 +26,5 @@ void print_yellow(char c);
 void print_blue(char c);
 void print_magenta(char c);
 void print_cyan(char c);
+
+char * CharToColor(char c);

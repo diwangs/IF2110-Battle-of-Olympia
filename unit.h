@@ -6,6 +6,9 @@
 
 /* struct Unit ini yang akan digunakan sebagai element pada ListUnit
  */
+
+typedef struct tPlayer Player;
+
 typedef struct tUnit {
     int max_health;
     int health;
@@ -18,10 +21,16 @@ typedef struct tUnit {
     int price;
     boolean is_dead;
     char * type;
+    Player * owner;
 } Unit;
 
 /* Constructor */
-Unit MakeUnit(int max_health, int health, int max_movp, int movp, char attack_type, boolean can_attack, Point coordinate, int price, boolean is_dead, char * type);
+Unit MakeUnit(int max_health, 
+    int health, int max_movp, 
+    int movp, char attack_type, 
+    boolean can_attack, Point coordinate, 
+    int price, boolean is_dead, 
+    char * type, Player * owner);
 
 /* Selector (Getter) */
 
@@ -36,6 +45,7 @@ Point GetUnitCoordinate(Unit unit);
 int GetUnitPrice(Unit unit);
 boolean GetUnitIsDead(Unit unit);
 char * GetUnitType(Unit unit);
+Player * GetUnitOwner(Unit unit);
 
 /* Setter */
 
@@ -50,6 +60,7 @@ void SetUnitCoordinate(Unit * unit, Point coordinate);
 void SetUnitPrice(Unit * unit, int price);
 void SetUnitIsDead(Unit * unit, boolean is_dead);
 void SetUnitType(Unit * unit, char * type);
+void SetUnitOwner(Unit * unit, Player * owner);
 
 /* Misc Functions */
 

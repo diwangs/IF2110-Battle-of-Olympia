@@ -1,8 +1,11 @@
 #include "village.h"
 
+
 /* Constructor */
 
-Village MakeVillage(Point coordinate, int income, int owner)
+typedef struct tPlayer Player;
+
+Village MakeVillage(Point coordinate, int income, Player * owner)
 {
 	Village v1;
 
@@ -25,7 +28,7 @@ int GetVillageIncome(Village village)
 	return village.income;
 }
 
-int GetVillageOwner(Village village)
+Player * GetVillageOwner(Village village)
 {
 	return village.owner;
 }
@@ -42,7 +45,7 @@ void SetVillageIncome(Village * village, int income)
 	village->income = income;
 }
 
-void SetVillageOwner(Village * village, int owner)
+void SetVillageOwner(Village * village, Player * owner)
 {
 	village->owner = owner;
 }
