@@ -19,7 +19,7 @@ typedef struct tElmtListUnit {
 	address_unit next;
 	address_unit prev;
 } ElmtUnitList;
-typedef struct {
+typedef struct tListUnit {
 	address_unit First;
 	address_unit Last;
 } ListUnit;

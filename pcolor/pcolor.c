@@ -37,3 +37,24 @@ void print_cyan(char c) {
     printf("%s%c", MAGENTA, c);
     printf("%s", NORMAL);
 }
+
+char * CharToColor(char c){
+    switch(c){
+        case 'N':
+            return NORMAL; break;
+        case 'R':
+            return RED; break;
+        case 'G':
+            return GREEN; break;
+        case 'Y':
+            return YELLOW; break;
+        case 'B':
+            return BLUE; break;
+        case 'M':
+            return MAGENTA; break;
+        case 'C':
+            return CYAN; break;
+        default:
+            return NORMAL;
+    }
+}

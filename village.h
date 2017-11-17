@@ -4,27 +4,29 @@
 #include "point.h"
 #include "boolean.h"
 
+typedef struct tPlayer Player;
+
 typedef struct tVillage {
     Point coordinate;
     int income;         // banyak gold yang diberikan village tiap turn
-    int owner;          // 0 jika tidak ada, else 1 atau 2
+    Player * owner;          // 0 jika tidak ada, else 1 atau 2
 } Village;
 
 /* Constructor */
 
-Village MakeVillage(Point coordinate, int income, int owner);
+Village MakeVillage(Point coordinate, int income, Player * owner);
 
 /* Getter */
 
 Point GetVillageCoordinate(Village village);
 int GetVillageIncome(Village village);
-int GetVillageOwner(Village village);
+Player * GetVillageOwner(Village village);
 
 /* Setter */
 
 void SetVillageCoordinate(Village * village, Point coordinate);
 void SetVillageIncome(Village * village, int income);
-void SetVillageOwner(Village * village, int owner);
+void SetVillageOwner(Village * village, Player * owner);
 
 /* Misc Functions */
 

@@ -19,7 +19,7 @@ typedef struct tElmtlistVillage {
 	address_village next;
 	address_village prev;
 } ElmtVillageList;
-typedef struct {
+typedef struct tListVillage {
 	address_village First;
 	address_village Last;
 } ListVillage;
