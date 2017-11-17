@@ -2,3 +2,5 @@ main
 a.out
 driver.c
 a.exe
+*.o
+*.a
