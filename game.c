@@ -92,6 +92,17 @@ void PrintTurnInfo(Player * player, Unit * currentUnit){
 }
 
 void PlayerTurn(Player * player){
+    Kata move = (Kata){"MOVE", 4};
+    Kata undo = (Kata){"UNDO", 4};
+    Kata change_unit = (Kata){"CHANGE_UNIT", 11};
+    Kata recruit = (Kata){"RECRUIT", 7};
+    Kata attack = (Kata){"ATTACK", 6};
+    Kata map = (Kata){"MAP", 3};
+    Kata info = (Kata){"INFO", 4};
+    Kata end_turn = (Kata){"END_TURN", 8};
+    Kata save = (Kata){"SAVE", 4};
+    Kata keluar = (Kata){"EXIT", 4};
+	
     for(int i = 0; i < 50; i++)
         printf("=");
     printf("\n");
