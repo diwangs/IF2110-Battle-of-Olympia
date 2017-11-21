@@ -5,6 +5,7 @@
 #include "listvillage.h"
 #include "peta.h"
 #include "game.h"
+#include "mesincmd.h"
 #include "player.h"
 #include "unit.h"
 #include "point.h"
@@ -99,7 +100,16 @@ void PlayerTurn(Player * player){
 
     char command[100];
     printf("Your Command > ");
-    scanf(" %s", command);
-    printf("%s\n", command);
+    get_cmd();
+    if (cmpkata(move,Cmd)) printf("move...\n");
+	else if (cmpkata(undo,Cmd)) printf("undo...\n");
+    else if (cmpkata(change_unit,Cmd)) printf("change unit...\n");
+    else if (cmpkata(recruit,Cmd)) printf("recruit...\n");
+    else if (cmpkata(attack,Cmd)) printf("attack...\n");
+    else if (cmpkata(map,Cmd)) printf("map...\n");
+    else if (cmpkata(info,Cmd)) printf("info...\n");
+    else if (cmpkata(end_turn,Cmd)) printf("end_turn...\n");
+    else if (cmpkata(save,Cmd)) printf("save...\n");
+    else if (cmpkata(exit,Cmd)) break;
 }
 
