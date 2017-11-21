@@ -6,7 +6,11 @@
 /* Variable extern dibawah menyatakan variable global yang dapat di akses oleh
  * seluruh file yang meng-include "game.h", tetapi tetap harus di inisialisasi.
  */
+
+typedef struct tPlayer Player;
+
 extern boolean GAME_RUNNING;
+Player * current;
 
 void NewGame();
 /* Membuat Game Baru,
@@ -15,7 +19,13 @@ void NewGame();
  * Membuat 2 player baru,
  */
 
-// void PlayerTurn(Player player);
+void TurnHandler();
+/* Mengatur turn player berapa
+ */
+
+void PrintTurnInfo(Player * player);
+
+void PlayerTurn(Player * player);
 /* Mengatur bagian turn player
  */
 

@@ -15,6 +15,7 @@ void MakePetakPeta(Point coor, char type, PetakPeta *petak){
     petak->type = type;
     petak->owner = NULL;
     petak->unit = NULL;
+    petak->village = NULL;
 }
 
 void SetPetakPetaOwner(PetakPeta * peta, Player * owner){
@@ -30,6 +31,19 @@ void SetPetakPetaOwnerType(PetakPeta * peta, Player * owner, char type){
     SetPetakPetaType(peta, type);
 }
 
+void SetPointPetaOwner(Point c, Peta * peta, Player * owner){
+    peta->m[c.X][c.Y]->owner = owner;
+}
+
+void SetPointPetaType(Point c, Peta * peta, char type){
+    peta->m[c.X][c.Y]->type = type;
+}
+
+void SetPointPetaOwnerType(Point c, Peta * peta, Player * owner, char type){
+    SetPointPetaOwner(c, peta, owner);
+    SetPointPetaType(c, peta, type);
+}
+
 void MakePeta(int nb, int nk, Peta *peta){
     peta->n_brs = nb;
     peta->n_kol = nk;
@@ -41,8 +55,13 @@ void MakePeta(int nb, int nk, Peta *peta){
         }
 }
 
-void AddUnitToCoordinate(Unit * u, Point p, Peta *peta){
-    peta->m[p.X][p.Y]->unit = u;
+void AddUnitToCoordinate(Unit * u, Point c, Peta *peta){
+    peta->m[c.X][c.Y]->unit = u;
+}
+
+void AddVillageToCoordinate(Village * v, Point c, Peta *peta){
+    peta->m[c.X][c.Y]->village = v;
+    peta->m[c.X][c.Y]->type = 'V';
 }
 
 void PrintPetaNormal(Peta peta){
