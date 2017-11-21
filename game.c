@@ -5,6 +5,7 @@
 #include "listvillage.h"
 #include "peta.h"
 #include "game.h"
+#include "mesincmd.h"
 #include "player.h"
 #include "unit.h"
 #include "point.h"
@@ -91,6 +92,17 @@ void PrintTurnInfo(Player * player, Unit * currentUnit){
 }
 
 void PlayerTurn(Player * player){
+    Kata move = (Kata){"MOVE", 4};
+    Kata undo = (Kata){"UNDO", 4};
+    Kata change_unit = (Kata){"CHANGE_UNIT", 11};
+    Kata recruit = (Kata){"RECRUIT", 7};
+    Kata attack = (Kata){"ATTACK", 6};
+    Kata map = (Kata){"MAP", 3};
+    Kata info = (Kata){"INFO", 4};
+    Kata end_turn = (Kata){"END_TURN", 8};
+    Kata save = (Kata){"SAVE", 4};
+    Kata keluar = (Kata){"EXIT", 4};
+	
     for(int i = 0; i < 50; i++)
         printf("=");
     printf("\n");
@@ -99,7 +111,16 @@ void PlayerTurn(Player * player){
 
     char command[100];
     printf("Your Command > ");
-    scanf(" %s", command);
-    printf("%s\n", command);
+    get_cmd();
+    if (cmpkata(move,Cmd)) printf("move...\n");
+	else if (cmpkata(undo,Cmd)) printf("undo...\n");
+    else if (cmpkata(change_unit,Cmd)) printf("change unit...\n");
+    else if (cmpkata(recruit,Cmd)) printf("recruit...\n");
+    else if (cmpkata(attack,Cmd)) printf("attack...\n");
+    else if (cmpkata(map,Cmd)) printf("map...\n");
+    else if (cmpkata(info,Cmd)) printf("info...\n");
+    else if (cmpkata(end_turn,Cmd)) printf("end_turn...\n");
+    else if (cmpkata(save,Cmd)) printf("save...\n");
+    else if (cmpkata(exit,Cmd)) break;
 }
 
