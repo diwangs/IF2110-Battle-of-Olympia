@@ -8,6 +8,7 @@
  */
 
 typedef struct tPlayer Player;
+typedef struct tUnit Unit;
 
 extern boolean GAME_RUNNING;
 Player * current;
@@ -23,7 +24,7 @@ void TurnHandler();
 /* Mengatur turn player berapa
  */
 
-void PrintTurnInfo(Player * player);
+void PrintTurnInfo(Player * player, Unit * currentUnit);
 
 void PlayerTurn(Player * player);
 /* Mengatur bagian turn player

@@ -44,6 +44,7 @@ void MakePeta(int nb, int nk, Peta *peta);
 
 void AddUnitToCoordinate(Unit * u, Point c, Peta *peta);
 void AddVillageToCoordinate(Village * v, Point c, Peta *peta);
+void AddUnitToPeta(Unit * u, Peta * peta);
 
 /* ****************************************************************************** */
 void PrintPetaNormal(Peta peta);

@@ -64,6 +64,10 @@ void AddVillageToCoordinate(Village * v, Point c, Peta *peta){
     peta->m[c.X][c.Y]->type = 'V';
 }
 
+void AddUnitToPeta(Unit * u, Peta * peta){
+    AddUnitToCoordinate(u, u->coordinate, peta);
+}
+
 void PrintPetaNormal(Peta peta){
     printf("    ");
     for(int i = 0; i < peta.n_kol; i++)

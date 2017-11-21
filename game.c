@@ -25,7 +25,7 @@ void NewGame(){
     InitializePlayer(&PLAYER1, 'R');
     Unit king1 = MakeUnit(100, 100, 10, 10, 'M', true, MakePOINT(brs_peta - 2, 1), 5, false, "KING", &PLAYER1);
     AddUnit(&PLAYER1, &king1);
-    AddUnitToCoordinate(&king1, king1.coordinate, &PETA);
+    AddUnitToPeta(&king1, &PETA);
     SetPetakPetaOwnerType(PETA.m[king1.coordinate.X][king1.coordinate.Y], &PLAYER1, 'T');
     SetPetakPetaOwnerType(PETA.m[king1.coordinate.X - 1][king1.coordinate.Y], &PLAYER1, 'C');
     SetPetakPetaOwnerType(PETA.m[king1.coordinate.X + 1][king1.coordinate.Y], &PLAYER1, 'C');
@@ -35,7 +35,7 @@ void NewGame(){
     InitializePlayer(&PLAYER2, 'Y');
     Unit king2 = MakeUnit(100, 100, 10, 10, 'M', true, MakePOINT(1, kol_peta - 2), 5, false, "KING", &PLAYER2);
     AddUnit(&PLAYER2, &king2);
-    AddUnitToCoordinate(&king2, king2.coordinate, &PETA);
+    AddUnitToPeta(&king2, &PETA);
     SetPetakPetaOwnerType(PETA.m[king2.coordinate.X][king2.coordinate.Y], &PLAYER2, 'T');
     SetPetakPetaOwnerType(PETA.m[king2.coordinate.X - 1][king2.coordinate.Y], &PLAYER2, 'C');
     SetPetakPetaOwnerType(PETA.m[king2.coordinate.X + 1][king2.coordinate.Y], &PLAYER2, 'C');
@@ -44,7 +44,7 @@ void NewGame(){
 
     // TODO Generate Village
 
-    // Call 
+    // Call
     PrintPetaNormal(PETA);
     current = &PLAYER1;
 
@@ -64,7 +64,7 @@ void TurnHandler(){
     }
 }
 
-void PrintTurnInfo(Player * player){
+void PrintTurnInfo(Player * player, Unit * currentUnit){
     printf("%s", CharToColor(player->color));
     if(player == &PLAYER1){
         printf("Player 1's turn.\n");
@@ -76,30 +76,29 @@ void PrintTurnInfo(Player * player){
     printf("Cash : %dG | Income : %dG | Upkeep : %dG\n", player->gold, player->income, player->upkeep);
 
     // print units
-    printf("Units:\n");
+    printf("Current unit:\n");
     address_unit f = player->list_unit.First;
-    while(f != NULL){
-        printf("    %10s(%2d, %2d) | Movement Point : %3d/%3d | HP %3d/%3d | Can attack : %s\n", 
-                f->info->type, 
-                f->info->coordinate.X, 
-                f->info->coordinate.Y, 
-                f->info->movp,
-                f->info->max_movp,
-                f->info->health,
-                f->info->max_health,
-                f->info->can_attack == 1 ? "Yes" : "No");
-        f = f->next;
-    }
+    printf("%s(%2d, %2d) | Movement Point : %3d/%3d | HP %3d/%3d | Can attack : %s\n",
+            f->info->type,
+            f->info->coordinate.X,
+            f->info->coordinate.Y,
+            f->info->movp,
+            f->info->max_movp,
+            f->info->health,
+            f->info->max_health,
+            f->info->can_attack == 1 ? "Yes" : "No"
+            );
 }
 
 void PlayerTurn(Player * player){
     for(int i = 0; i < 50; i++)
         printf("=");
     printf("\n");
-    PrintTurnInfo(player);
+    Unit * currentUnit = player->list_unit.First->info;
+    PrintTurnInfo(player, currentUnit);
 
     char command[100];
-    printf("\nYour Command > ");
+    printf("Your Command > ");
     scanf(" %s", command);
     printf("%s\n", command);
 }
