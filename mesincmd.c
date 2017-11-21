@@ -4,17 +4,17 @@
 Kata Cmd;
 char CCmd;
 
-void ADV(){
+void ADVC(){
 	fscanf(stdin,"%c",&CCmd);
 }
 
 void get_cmd(){
 	Cmd.Length = 0;
-	ADV();
+	ADVC();
 	while (CCmd != 10) {
 		Cmd.TabKata[Cmd.Length] = CCmd;
 		Cmd.Length++;
-		ADV();
+		ADVC();
 	}
 }
 
