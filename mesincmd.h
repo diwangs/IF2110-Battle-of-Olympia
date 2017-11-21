@@ -28,7 +28,7 @@ extern char CCmd;
 #define save (Kata){"SAVE", 4}
 #define exit (Kata){"EXIT", 4}
 
-void ADV();
+void ADVC();
 void get_cmd();
 boolean cmpkata(Kata K1, Kata K2);
 
