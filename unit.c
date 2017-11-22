@@ -1,4 +1,6 @@
 #include "unit.h"
+#include <stdlib.h>
+#include <stdio.h>
 
 typedef struct tPlayer Player;
 
@@ -171,14 +173,19 @@ Unit CopyUnit(Unit unit, Point coordinate)
     return u1;
 }
 
+boolean CanUnitMoveThatFar(Unit * unit, int x, int y)
+{
+    int absis = Absis(GetUnitCoordinate(*unit));
+    int ordinat = Ordinat(GetUnitCoordinate(*unit));
+
+    return ((abs(x-absis) + abs(y-ordinat)) <= unit->movp);
+}
+
 void MoveUnit(Unit * unit, int x, int y)
 {
     Point p1;
-    int absis, ordinat;
-    absis = Absis(unit->coordinate);
-    ordinat = Ordinat(unit->coordinate);
-    p1 = MakePOINT(x+absis,y+ordinat);
 
+    p1 = MakePOINT(x,y);
     unit->coordinate = p1;
 }
 

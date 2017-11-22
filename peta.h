@@ -4,6 +4,7 @@
 #include "unit.h"
 #include "point.h"
 #include "village.h"
+#include "boolean.h"
 
 #define BRS_MAX 100
 #define KOL_MAX 100
@@ -45,6 +46,8 @@ void MakePeta(int nb, int nk, Peta *peta);
 void AddUnitToCoordinate(Unit * u, Point c, Peta *peta);
 void AddVillageToCoordinate(Village * v, Point c, Peta *peta);
 void AddUnitToPeta(Unit * u, Peta * peta);
+
+boolean IsPetakOccupied(int brs, int kol);
 
 /* ****************************************************************************** */
 void PrintPetaNormal(Peta peta);

@@ -10,6 +10,7 @@
 #include "unit.h"
 #include "point.h"
 #include "pcolor/pcolor.h"
+#include "util.h"
 
 void NewGame(){
     srand(time(NULL));
@@ -91,7 +92,10 @@ void PrintTurnInfo(Player * player, Unit * currentUnit){
             );
 }
 
-void PlayerTurn(Player * player){
+void PlayerTurn(Player * player) {
+    boolean executed = false;
+    int selection;
+    int x, y;
     Kata move = (Kata){"MOVE", 4};
     Kata undo = (Kata){"UNDO", 4};
     Kata change_unit = (Kata){"CHANGE_UNIT", 11};
@@ -109,18 +113,58 @@ void PlayerTurn(Player * player){
     Unit * currentUnit = player->list_unit.First->info;
     PrintTurnInfo(player, currentUnit);
 
-    char command[100];
-    printf("Your Command > ");
-    get_cmd();
-    if (cmpkata(move,Cmd)) printf("move...\n");
-	else if (cmpkata(undo,Cmd)) printf("undo...\n");
-    else if (cmpkata(change_unit,Cmd)) printf("change unit...\n");
-    else if (cmpkata(recruit,Cmd)) printf("recruit...\n");
-    else if (cmpkata(attack,Cmd)) printf("attack...\n");
-    else if (cmpkata(map,Cmd)) printf("map...\n");
-    else if (cmpkata(info,Cmd)) printf("info...\n");
-    else if (cmpkata(end_turn,Cmd)) printf("end_turn...\n");
-    else if (cmpkata(save,Cmd)) printf("save...\n");
-    else if (cmpkata(exit,Cmd)) break;
+    while (!executed) {
+        printf("Your Command > ");
+        get_cmd();
+        if (cmpkata(move,Cmd)) {
+            printf("Map Coordinate x : ");
+            get_cmd();
+            x = KataToInt(Cmd);
+            printf("Map Coordinate y : ");
+            get_cmd();
+            y = KataToInt(Cmd);
+            if (CanUnitMoveThatFar(currentUnit, x, y) && !IsPetakOccupied(x, y)) {
+                (PETA.m[Absis(currentUnit->coordinate)][Ordinat(currentUnit->coordinate)])->unit = NULL;
+                MoveUnit(currentUnit, x, y);
+                AddUnitToPeta(currentUnit, &PETA);
+                printf("You have moved your %s to ", GetUnitType(*currentUnit));
+                TulisPOINT(GetUnitCoordinate(*currentUnit));
+                printf("\n");
+            } else {
+                printf("You can't move your unit to there.\n");
+            }
+        } else if (cmpkata(undo,Cmd)) {
+            printf("undo...\n");
+        } else if (cmpkata(change_unit,Cmd)) {
+            PrintListUnit(player->list_unit);
+            printf("Please enter the no. of unit you want to select: ");
+            get_cmd();
+            selection = KataToInt(Cmd);
+            if (IsNthUnitExist(player->list_unit, selection)) {
+                currentUnit = SelectNthUnit(player->list_unit, selection);
+                printf("You are now selecting %s\n", GetUnitType(*currentUnit));
+            } else {
+                printf("Unit doesn't exist.\n");
+                executed = false;
+            }
+        } else if (cmpkata(recruit,Cmd)) {
+            printf("recruit...\n");
+        } else if (cmpkata(attack,Cmd)) {
+            printf("attack...\n");
+        } else if (cmpkata(map,Cmd)) {
+            PrintPetaNormal(PETA);
+        } else if (cmpkata(info,Cmd)) {
+            printf("info...\n");
+        } else if (cmpkata(end_turn,Cmd)) {
+            executed = true;
+        } else if (cmpkata(save,Cmd)) {
+            printf("save...\n");
+        } else if (cmpkata(keluar,Cmd)) {
+            exit(0);
+            break;
+        } else {
+            printf("Command not found.\n");
+        }
+    }
 }
 

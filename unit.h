@@ -65,6 +65,7 @@ void SetUnitOwner(Unit * unit, Player * owner);
 /* Misc Functions */
 
 Unit CopyUnit(Unit unit, Point coordinate);
+boolean CanUnitMoveThatFar(Unit * unit, int x, int y);
 void MoveUnit(Unit * unit, int x, int y);
 boolean IsEQUnit(Unit u1, Unit u2);
 

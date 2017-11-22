@@ -306,3 +306,53 @@ void DelBeforeListUnit (ListUnit *L, address_unit *Pdel, address_unit Succ)
 		FirstUnit(*L) = Succ;
 	}
 }
+
+void PrintListUnit(ListUnit L)
+/* Print seluruh Unit beserta keterangannya */
+{
+	int count = 1;
+	address_unit P;
+
+	P = FirstUnit(L);
+
+	if (P == Nil) {
+		printf("You don't have any unit.\n");
+		return;
+	}
+
+	while (P != Nil) {
+		printf("%d. %s ", count, GetUnitType(*(InfoUnit(P))));
+		TulisPOINT(GetUnitCoordinate(*(InfoUnit(P))));
+		printf(" | Health %d/%d\n", GetUnitHealth(*(InfoUnit(P))), GetUnitMaxHealth(*(InfoUnit(P))));
+		count++;
+		P = NextUnit(P);
+	}
+}
+
+boolean IsNthUnitExist(ListUnit L, int pos)
+{
+	int count = 1;
+	address_unit P;
+	P = FirstUnit(L);
+
+	while (count < pos && NextUnit(P) != Nil) {
+		P = NextUnit(P);
+		count++;
+	}
+
+	return count == pos;
+}
+
+Unit * SelectNthUnit(ListUnit L, int pos)
+{
+	int count = 1;
+	address_unit P;
+	P = FirstUnit(L);
+
+	while (count < pos && NextUnit(P) != Nil) {
+		P = NextUnit(P);
+		count++;
+	}
+
+	return InfoUnit(P);
+}

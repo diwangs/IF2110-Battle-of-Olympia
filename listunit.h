@@ -8,6 +8,7 @@
 
 #include "boolean.h"
 #include "unit.h"
+#include <stdio.h>
 
 #define Nil NULL
 
@@ -125,6 +126,11 @@ void DelBeforeListUnit (ListUnit *L, address_unit *Pdel, address_unit Succ);
 /* I.S. ListUnit tidak kosong. Succ adalah anggota list. */
 /* F.S. Menghapus Prev(Succ): */
 /*      Pdel adalah alamat elemen ListUnit yang dihapus  */
+void PrintListUnit(ListUnit L);
+/* Print seluruh Unit beserta keterangannya */
+
+boolean IsNthUnitExist(ListUnit L, int pos);
+Unit * SelectNthUnit(ListUnit L, int pos);
 
 /****************** PROSES SEMUA ELEMEN ListUnit ******************/
 
