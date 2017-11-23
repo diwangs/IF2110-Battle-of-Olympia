@@ -140,3 +140,10 @@ void PrintPetaNormal(Peta peta){
         printf("\n");
     }
 }
+
+boolean IsPetakOccupied(int brs, int kol)
+{
+    PetakPeta P = *(PETA.m[brs][kol]);
+
+    return P.unit != NULL;
+}

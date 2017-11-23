@@ -1,6 +1,9 @@
 #ifndef _PLAYER_H_
 #define _PLAYER_H_
 
+#include "listunit.h"
+#include "listvillage.h"
+
 /* PLAYER1 dan PLAYER2 dijadikan global untuk memudahkan memindahkan data,
  * tetapi tetap harus diinisialisasi menggunakan InitializePlayer()
  */
