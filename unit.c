@@ -9,7 +9,7 @@ Unit MakeUnit(int max_health, int health,
     int max_movp, int movp, 
     char attack_type, boolean can_attack, 
     Point coordinate, int price, 
-    boolean is_dead, char * type, Player * owner)
+    boolean is_dead, char type, Player * owner)
 {
     Unit u1;
     SetUnitMaxHealth(&u1, max_health);
@@ -79,7 +79,7 @@ boolean GetUnitIsDead(Unit unit)
     return unit.is_dead;
 }
 
-char * GetUnitType(Unit unit)
+char GetUnitType(Unit unit)
 {
     return unit.type;
 }
@@ -141,7 +141,7 @@ void SetUnitIsDead(Unit * unit, boolean is_dead)
     unit->is_dead = is_dead;
 }
 
-void SetUnitType(Unit * unit, char * type)
+void SetUnitType(Unit * unit, char type)
 {
     unit->type = type;
 }
