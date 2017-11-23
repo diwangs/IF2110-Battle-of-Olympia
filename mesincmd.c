@@ -1,5 +1,6 @@
 #include "mesincmd.h"
 #include <stdio.h>
+#include <ctype.h>
 
 Kata Cmd;
 char CCmd;
@@ -12,7 +13,7 @@ void get_cmd(){
 	Cmd.Length = 0;
 	ADVC();
 	while (CCmd != 10) {
-		Cmd.TabKata[Cmd.Length] = CCmd;
+		Cmd.TabKata[Cmd.Length] = toupper(CCmd);
 		Cmd.Length++;
 		ADVC();
 	}
