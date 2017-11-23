@@ -7,28 +7,28 @@ Unit king = MakeUnit(
     1, 1, 
     'm', 1, 
     NULL, 1, 
-    0, 'king', NULL);
+    0, 'k', NULL);
 
 Unit archer = MakeUnit(
 	10, 10, 
     1, 1, 
     'r', 1, 
     NULL, 1, 
-    0, 'archer', NULL);
+    0, 'a', NULL);
 
 Unit swordsman = MakeUnit(
 	10, 10, 
     1, 1, 
     'm', 1, 
    	NULL, 1, 
-    0, 'swordsman', NULL);
+    0, 's', NULL);
 
 Unit mage = MakeUnit(
 	10, 10, 
     1, 1, 
     'r', 1, 
     NULL, 1, 
-    0, 'mage', NULL);
+    0, 'm', NULL);
 
 Unit CreateUnitKing(Player * P, int brs, int kol)
 {

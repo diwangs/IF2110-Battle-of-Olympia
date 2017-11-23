@@ -20,7 +20,7 @@ typedef struct tUnit {
     Point coordinate;
     int price;
     boolean is_dead;
-    char * type;
+    char type;
     Player * owner;
 } Unit;
 
@@ -30,7 +30,7 @@ Unit MakeUnit(int max_health,
     int movp, char attack_type, 
     boolean can_attack, Point coordinate, 
     int price, boolean is_dead, 
-    char * type, Player * owner);
+    char type, Player * owner);
 
 /* Selector (Getter) */
 
@@ -44,7 +44,7 @@ boolean GetUnitCanAttack(Unit unit);
 Point GetUnitCoordinate(Unit unit);
 int GetUnitPrice(Unit unit);
 boolean GetUnitIsDead(Unit unit);
-char * GetUnitType(Unit unit);
+char GetUnitType(Unit unit);
 Player * GetUnitOwner(Unit unit);
 
 /* Setter */
@@ -59,7 +59,7 @@ void SetUnitCanAttack(Unit * unit, boolean can_attack);
 void SetUnitCoordinate(Unit * unit, Point coordinate);
 void SetUnitPrice(Unit * unit, int price);
 void SetUnitIsDead(Unit * unit, boolean is_dead);
-void SetUnitType(Unit * unit, char * type);
+void SetUnitType(Unit * unit, char type);
 void SetUnitOwner(Unit * unit, Player * owner);
 
 /* Misc Functions */
