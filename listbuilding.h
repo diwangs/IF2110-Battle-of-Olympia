@@ -126,6 +126,10 @@ void DelBeforeListBuilding (ListBuilding *L, address_building *Pdel, address_bui
 /* F.S. Menghapus Prev(Succ): */
 /*      Pdel adalah alamat elemen ListBuilding yang dihapus  */
 
+boolean IsBuildingTypeExist (ListBuilding L, char type);
+void PrintListBuilding(ListBuilding L);
+void PrintListBuildingByType(ListBuilding L, char type);
+
 /****************** PROSES SEMUA ELEMEN ListBuilding ******************/
 
 #endif
