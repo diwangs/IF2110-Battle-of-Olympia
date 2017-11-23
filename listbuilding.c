@@ -1,6 +1,7 @@
 #include "listbuilding.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include "peta.h"
 
 /* PROTOTYPE */
 /****************** TEST ListBuilding KOSONG ******************/
@@ -303,5 +304,74 @@ void DelBeforeListBuilding (ListBuilding *L, address_building *Pdel, address_bui
 		NextBuilding(PrevBuilding(Succ)) = Succ;
 	} else {
 		FirstBuilding(*L) = Succ;
+	}
+}
+
+boolean IsBuildingTypeExist (ListBuilding L, char type)
+{
+	address_building P = FirstBuilding(L);
+
+	while (P != Nil) {
+		if (InfoBuilding(P)->type == type) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+void PrintListBuilding(ListBuilding L)
+/* Print seluruh Building beserta keterangannya */
+{
+	int count = 1;
+	address_building P;
+	Point P1;
+
+	P = FirstBuilding(L);
+
+	if (P == Nil) {
+		printf("You don't have any building.\n");
+		return;
+	}
+
+	while (P != Nil) {
+		P1 = GetBuildingCoordinate(*(InfoBuilding(P)));
+		printf("%d. %c ", count, GetBuildingType(*(InfoBuilding(P))));
+		TulisPOINT(P1);
+		if (IsPetakOccupied(Absis(P1), Ordinat(P1))) {
+			printf(" | Occupied");
+		}
+		printf("\n");
+		count++;
+		P = NextBuilding(P);
+	}
+}
+
+void PrintListBuildingByType(ListBuilding L, char type)
+/* Print seluruh Building beserta keterangannya */
+{
+	int count = 1;
+	address_building P;
+	Point P1;
+
+	P = FirstBuilding(L);
+
+	if (P == Nil) {
+		printf("You don't have any building.\n");
+		return;
+	}
+
+	while (P != Nil) {
+		P1 = GetBuildingCoordinate(*(InfoBuilding(P)));
+		if (InfoBuilding(P)->type == type) {
+			printf("%d. %c ", count, GetBuildingType(*(InfoBuilding(P))));
+			TulisPOINT(P1);
+			if (IsPetakOccupied(Absis(P1), Ordinat(P1))) {
+				printf(" | Occupied");
+			}
+			printf("\n");
+		}
+		count++;
+		P = NextBuilding(P);
 	}
 }

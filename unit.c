@@ -208,3 +208,32 @@ boolean IsEQUnit(Unit u1, Unit u2)
         GetUnitMaxMovePoint(u1) == GetUnitMaxMovePoint(u2) &&
         GetUnitOwner(u1) == GetUnitOwner(u2);
 }
+
+
+void AttackUnit(Unit * from, Unit * target)
+{
+    int x1 = Absis(GetUnitCoordinate(*from));
+    int y1 = Ordinat(GetUnitCoordinate(*from));
+    int x2 = Absis(GetUnitCoordinate(*target));
+    int y2 = Ordinat(GetUnitCoordinate(*target));
+
+    int range = abs(x1-x2) + abs(y1-y2);
+
+    if (range != 1) {
+        return;
+    }
+
+    target->health -= from->attack;
+
+    if (target->health <= 0) {
+        target->is_dead = 1;
+    }
+
+    if (target->type == 'K' || target->attack_type == from->attack_type) {
+        from->health -= target->attack;
+    }
+
+    if (from->health <= 0) {
+        from->is_dead = 1;
+    }
+}
