@@ -48,8 +48,9 @@ void AddVillageToCoordinate(Village * v, Point c, Peta *peta);
 void AddUnitToPeta(Unit * u, Peta * peta);
 
 boolean IsPetakOccupied(int brs, int kol);
+boolean IsInsidePeta(Peta peta, int r, int c);
 
 /* ****************************************************************************** */
-void PrintPetaNormal(Peta peta);
+void PrintPetaNormal(Peta peta, Unit * unit);
 
 #endif

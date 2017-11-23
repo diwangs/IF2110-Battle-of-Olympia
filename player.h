@@ -11,6 +11,7 @@
 typedef struct tListUnit ListUnit;
 typedef struct tListVillage ListVillage;
 typedef struct tUnit Unit;
+typedef struct tVillage Village;
 
 typedef struct tPlayer{    
     int gold;
@@ -27,5 +28,6 @@ void InitializePlayer(Player *player, char c);
 // Inisialisasi semua field struct Player, kedua list kosong
 
 void AddUnit(Player *player, Unit *unit);
+void AddVillage(Player *player, Village *village);
 
 #endif

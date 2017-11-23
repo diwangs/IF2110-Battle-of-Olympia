@@ -184,7 +184,10 @@ boolean CanUnitMoveThatFar(Unit * unit, int x, int y)
 void MoveUnit(Unit * unit, int x, int y)
 {
     Point p1;
+    int absis = Absis(GetUnitCoordinate(*unit));
+    int ordinat = Ordinat(GetUnitCoordinate(*unit));
 
+    unit->movp -= (abs(x-absis) + abs(y-ordinat));
     p1 = MakePOINT(x,y);
     unit->coordinate = p1;
 }

@@ -20,7 +20,7 @@ int main(){
     
     printf("> ");
 
-    scanf("%d", &selection);
+    scanf(" %d", &selection);
     if(selection == 1){
         NewGame();
     }

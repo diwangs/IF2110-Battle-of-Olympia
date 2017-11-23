@@ -68,7 +68,17 @@ void AddUnitToPeta(Unit * u, Peta * peta){
     AddUnitToCoordinate(u, u->coordinate, peta);
 }
 
-void PrintPetaNormal(Peta peta){
+boolean IsPetakOccupied(int brs, int kol)
+{
+    PetakPeta P = *(PETA.m[brs][kol]);
+    return P.unit != NULL;
+}
+
+boolean IsInsidePeta(Peta peta, int r, int c){
+    return (0 <= r) && (r < peta.n_brs) && (0 <= c) && (c < peta.n_kol);
+}
+
+void PrintPetaNormal(Peta peta, Unit * unit){
     printf("    ");
     for(int i = 0; i < peta.n_kol; i++)
         printf("%3d ", i);
@@ -86,7 +96,12 @@ void PrintPetaNormal(Peta peta){
         // Cetak baris pertama dan bangunan
         printf("   ┃");
         for(int j = 0; j < peta.n_kol; j++){
-            if(peta.m[i][j]->type != 'N'){
+            if(peta.m[i][j]->type == 'V'){
+                if(peta.m[i][j]->owner != NULL)
+                    printf("%s", CharToColor(peta.m[i][j]->owner->color));
+                printf(" %c ", peta.m[i][j]->type);
+                printf("%s", NORMAL);
+            } else if(peta.m[i][j]->type != 'N'){
                 printf("%s", CharToColor(peta.m[i][j]->owner->color));
                 printf(" %c ", peta.m[i][j]->type);
                 printf("%s", NORMAL);
@@ -100,22 +115,41 @@ void PrintPetaNormal(Peta peta){
         // Cetak nomor baris dan unit
         printf("%2d ┃", i);
         for(int j = 0; j < peta.n_kol; j++){
-            if(peta.m[i][j]->unit != NULL){
-                printf("%s", CharToColor(peta.m[i][j]->unit->owner->color));
-                printf(" %c ", GetUnitType(*peta.m[i][j]->unit)[0]);
-                printf("%s", NORMAL);
-            } else {
-                printf("   ");
+            printf(" ");
+            if((unit != NULL) && ((abs(i - unit->coordinate.X) + abs(j - unit->coordinate.Y)) <= unit->movp)){
+                printf("%s", WHITE_BACK);
             }
-            printf("┃");
+            if(peta.m[i][j]->unit != NULL){
+                if(peta.m[i][j]->unit == unit){
+                    printf("%s", "\x1B[1m\x1B[4m");
+                }
+                printf("%s", CharToColor(peta.m[i][j]->unit->owner->color));
+                printf("%c", GetUnitType(*peta.m[i][j]->unit)[0]);
+            } else {
+                printf(" ");
+            }
+            printf("%s", NORMAL);
+            printf(" ┃");
         }
         printf("\n");
         
         // cetak baris terakhir dan range jika perlu
-        printf("   ┃");
+        /*printf("   ┃");
         for(int j = 0; j < peta.n_kol; j++)
-            printf("   ┃");
-        printf("\n");
+            if(unit == NULL)
+                printf("   ┃");
+            else{
+                printf(" ");
+                if(((abs(i - unit->coordinate.X) + abs(j - unit->coordinate.Y)) <= unit->movp)){
+                    printf("%s", CharToColor(unit->owner->color));
+                    printf("●");
+                    printf("%s", NORMAL);
+                } else {
+                    printf(" ");
+                }
+                printf(" ┃");
+            }
+        printf("\n");*/
 
         // cetak garis bawah
         if(i != peta.n_brs - 1)
@@ -141,9 +175,3 @@ void PrintPetaNormal(Peta peta){
     }
 }
 
-boolean IsPetakOccupied(int brs, int kol)
-{
-    PetakPeta P = *(PETA.m[brs][kol]);
-
-    return P.unit != NULL;
-}

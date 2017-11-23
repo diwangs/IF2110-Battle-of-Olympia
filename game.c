@@ -8,6 +8,7 @@
 #include "mesincmd.h"
 #include "player.h"
 #include "unit.h"
+#include "village.h"
 #include "point.h"
 #include "pcolor/pcolor.h"
 #include "util.h"
@@ -20,12 +21,13 @@ void NewGame(){
     scanf("%d", &brs_peta);
     printf("Kol peta? > ");
     scanf(" %d", &kol_peta);
+    getchar();
 
     MakePeta(brs_peta, kol_peta, &PETA);
 
     // inisialisasi pemain
     InitializePlayer(&PLAYER1, 'R');
-    Unit king1 = MakeUnit(100, 100, 10, 10, 'M', true, MakePOINT(brs_peta - 2, 1), 5, false, "KING", &PLAYER1);
+    Unit king1 = MakeUnit(100, 100, 5, 5, 'M', true, MakePOINT(brs_peta - 2, 1), 5, false, "KING", &PLAYER1);
     AddUnit(&PLAYER1, &king1);
     AddUnitToPeta(&king1, &PETA);
     SetPetakPetaOwnerType(PETA.m[king1.coordinate.X][king1.coordinate.Y], &PLAYER1, 'T');
@@ -45,9 +47,21 @@ void NewGame(){
     SetPetakPetaOwnerType(PETA.m[king2.coordinate.X][king2.coordinate.Y + 1], &PLAYER2, 'C');
 
     // TODO Generate Village
+    int nvillage = brs_peta * kol_peta / 20;
+    for(int i = 0; i < nvillage; i++)
+        while(true){
+            int r = rand() % brs_peta;
+            int c = rand() % kol_peta;
+            if(PETA.m[r][c]->type == 'N'){
+                Village village = MakeVillage(MakePOINT(r, c), 1, NULL);
+                PETA.m[r][c]->village = &village;
+                PETA.m[r][c]->type = 'V';
+                PETA.m[r][c]->owner = village.owner;
+                break;
+            }
+        }
 
     // Call
-    PrintPetaNormal(PETA);
     current = &PLAYER1;
 
     TurnHandler();
@@ -76,6 +90,7 @@ void PrintTurnInfo(Player * player, Unit * currentUnit){
     printf("%s", NORMAL);
     // print status
     printf("Cash : %dG | Income : %dG | Upkeep : %dG\n", player->gold, player->income, player->upkeep);
+
 
     // print units
     printf("Current unit:\n");
@@ -107,29 +122,42 @@ void PlayerTurn(Player * player) {
     Kata save = (Kata){"SAVE", 4};
     Kata keluar = (Kata){"EXIT", 4};
 	
+    // income
+    current->gold += current->income;
+
     for(int i = 0; i < 50; i++)
         printf("=");
     printf("\n");
     Unit * currentUnit = player->list_unit.First->info;
     PrintTurnInfo(player, currentUnit);
+    PrintPetaNormal(PETA, NULL);
 
     while (!executed) {
         printf("Your Command > ");
         get_cmd();
         if (cmpkata(move,Cmd)) {
-            printf("Map Coordinate x : ");
+            PrintPetaNormal(PETA, currentUnit);
+            printf("Map Coordinate R : ");
             get_cmd();
             x = KataToInt(Cmd);
-            printf("Map Coordinate y : ");
+            printf("Map Coordinate C : ");
             get_cmd();
             y = KataToInt(Cmd);
-            if (CanUnitMoveThatFar(currentUnit, x, y) && !IsPetakOccupied(x, y)) {
-                (PETA.m[Absis(currentUnit->coordinate)][Ordinat(currentUnit->coordinate)])->unit = NULL;
+            if (IsInsidePeta(PETA, x, y) && CanUnitMoveThatFar(currentUnit, x, y) && !IsPetakOccupied(x, y)) {
+                PETA.m[Absis(currentUnit->coordinate)][Ordinat(currentUnit->coordinate)]->unit = NULL;
                 MoveUnit(currentUnit, x, y);
                 AddUnitToPeta(currentUnit, &PETA);
                 printf("You have moved your %s to ", GetUnitType(*currentUnit));
                 TulisPOINT(GetUnitCoordinate(*currentUnit));
                 printf("\n");
+                // cek village
+                if(PETA.m[currentUnit->coordinate.X][currentUnit->coordinate.Y]->type == 'V'){
+                    Village * v = PETA.m[currentUnit->coordinate.X][currentUnit->coordinate.Y]->village;
+                    v->owner = current;
+                    PETA.m[currentUnit->coordinate.X][currentUnit->coordinate.Y]->owner = current;
+                    AddVillage(current, v);
+                    printf("You acquire a village!\n");
+                }
             } else {
                 printf("You can't move your unit to there.\n");
             }
@@ -152,10 +180,12 @@ void PlayerTurn(Player * player) {
         } else if (cmpkata(attack,Cmd)) {
             printf("attack...\n");
         } else if (cmpkata(map,Cmd)) {
-            PrintPetaNormal(PETA);
+            PrintPetaNormal(PETA, NULL);
         } else if (cmpkata(info,Cmd)) {
-            printf("info...\n");
+            PrintTurnInfo(current, currentUnit);
         } else if (cmpkata(end_turn,Cmd)) {
+            // kurangi gold
+            current->gold -= current->upkeep;
             executed = true;
         } else if (cmpkata(save,Cmd)) {
             printf("save...\n");
