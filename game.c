@@ -12,6 +12,7 @@
 #include "point.h"
 #include "pcolor/pcolor.h"
 #include "util.h"
+#include "template.h"
 
 void NewGame(){
     srand(time(NULL));
@@ -28,7 +29,7 @@ void NewGame(){
     // inisialisasi pemain
     Building * btemp;
     InitializePlayer(&PLAYER1, 'R');
-    Unit king1 = MakeUnit(100, 100, 6, 6, 'M', true, MakePOINT(brs_peta - 2, 1), 5, false, "KING", &PLAYER1);
+    Unit king1 = CreateUnitKing(&PLAYER1, brs_peta - 2, 1);
     AddUnit(&PLAYER1, &king1);
     AddUnitToPeta(&king1, &PETA);
 
@@ -44,7 +45,7 @@ void NewGame(){
     AddBuilding(&PLAYER1, btemp); AddBuildingToPeta(btemp, &PETA);
 
     InitializePlayer(&PLAYER2, 'Y');
-    Unit king2 = MakeUnit(100, 100, 6, 6, 'M', true, MakePOINT(1, kol_peta - 2), 5, false, "KING", &PLAYER2);
+    Unit king2 = CreateUnitKing(&PLAYER2, 1, kol_peta - 2);
     AddUnit(&PLAYER2, &king2);
     AddUnitToPeta(&king2, &PETA);
 
@@ -72,7 +73,6 @@ void NewGame(){
 
     // Call
     current = &PLAYER1;
-    PrintPetaNormal(PETA, NULL);
 
     TurnHandler();
 }
@@ -105,7 +105,7 @@ void PrintTurnInfo(Player * player, Unit * currentUnit){
     // print units
     printf("Current unit:\n");
     address_unit f = player->list_unit.First;
-    printf("%s(%2d, %2d) | Movement Point : %3d/%3d | HP %3d/%3d | Can attack : %s\n",
+    printf("%c(%2d, %2d) | Movement Point : %3d/%3d | HP %3d/%3d | Can attack : %s\n",
             f->info->type,
             f->info->coordinate.X,
             f->info->coordinate.Y,
@@ -147,30 +147,35 @@ void PlayerTurn(Player * player) {
         get_cmd();
         if (cmpkata(move,Cmd)) {
             PrintPetaNormal(PETA, currentUnit);
-            printf("Map Coordinate R : ");
-            get_cmd();
-            x = KataToInt(Cmd);
-            printf("Map Coordinate C : ");
-            get_cmd();
-            y = KataToInt(Cmd);
-
-            if (IsInsidePeta(PETA, x, y) && CanUnitMoveThatFar(currentUnit, x, y) && !IsPetakOccupied(x, y)) {
-                PETA.m[Absis(currentUnit->coordinate)][Ordinat(currentUnit->coordinate)]->unit = NULL;
-                MoveUnit(currentUnit, x, y);
-                AddUnitToPeta(currentUnit, &PETA);
-                printf("You have moved your %s to ", GetUnitType(*currentUnit));
-                TulisPOINT(GetUnitCoordinate(*currentUnit));
-                printf("\n");
-
-                PetakPeta * p = PETA.m[currentUnit->coordinate.X][currentUnit->coordinate.Y];
-                if((p->building != NULL) && (p->building->type == 'V')){
-                    Building * b = p->building;
-                    b->owner = current;
-                    AddBuilding(current, b);
-                    printf("You acquire a building!\n");
-                }
+            if(currentUnit->movp <= 0){
+                printf("You can't move your unit anymore.\n");
             } else {
-                printf("You can't move your unit to there.\n");
+                printf("Map Coordinate R : ");
+                get_cmd();
+                x = KataToInt(Cmd);
+                printf("Map Coordinate C : ");
+                get_cmd();
+                y = KataToInt(Cmd);
+
+                if (IsInsidePeta(PETA, x, y) && CanUnitMoveThatFar(currentUnit, x, y) && !IsPetakOccupied(x, y)) {
+                    PETA.m[Absis(currentUnit->coordinate)][Ordinat(currentUnit->coordinate)]->unit = NULL;
+                    MoveUnit(currentUnit, x, y);
+                    AddUnitToPeta(currentUnit, &PETA);
+                    printf("You have moved your %c to ", GetUnitType(*currentUnit));
+                    TulisPOINT(GetUnitCoordinate(*currentUnit));
+                    printf("\n");
+
+                    PetakPeta * p = PETA.m[currentUnit->coordinate.X][currentUnit->coordinate.Y];
+                    if((p->building != NULL) && (p->building->type == 'V')){
+                        Building * b = p->building;
+                        b->owner = current;
+                        AddBuilding(current, b);
+                        SetUnitMovePoint(currentUnit, 0);
+                        printf("You acquire a building!\n");
+                    }
+                } else {
+                    printf("You can't move your unit to there.\n");
+                }
             }
         } else if (cmpkata(undo,Cmd)) {
             printf("undo...\n");
@@ -181,13 +186,15 @@ void PlayerTurn(Player * player) {
             selection = KataToInt(Cmd);
             if (IsNthUnitExist(player->list_unit, selection)) {
                 currentUnit = SelectNthUnit(player->list_unit, selection);
-                printf("You are now selecting %s\n", GetUnitType(*currentUnit));
+                printf("You are now selecting %d\n", GetUnitType(*currentUnit));
             } else {
                 printf("Unit doesn't exist.\n");
                 executed = false;
             }
         } else if (cmpkata(recruit,Cmd)) {
-            printf("recruit...\n");
+            // Check if any castle is empty
+            boolean empty_exists = false;
+
         } else if (cmpkata(attack,Cmd)) {
             printf("attack...\n");
         } else if (cmpkata(map,Cmd)) {
@@ -202,7 +209,6 @@ void PlayerTurn(Player * player) {
             printf("save...\n");
         } else if (cmpkata(keluar,Cmd)) {
             exit(0);
-            break;
         } else {
             printf("Command not found.\n");
         }

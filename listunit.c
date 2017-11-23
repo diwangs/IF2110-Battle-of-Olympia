@@ -321,7 +321,7 @@ void PrintListUnit(ListUnit L)
 	}
 
 	while (P != Nil) {
-		printf("%d. %s ", count, GetUnitType(*(InfoUnit(P))));
+		printf("%d. %c ", count, GetUnitType(*(InfoUnit(P))));
 		TulisPOINT(GetUnitCoordinate(*(InfoUnit(P))));
 		printf(" | Health %d/%d\n", GetUnitHealth(*(InfoUnit(P))), GetUnitMaxHealth(*(InfoUnit(P))));
 		count++;

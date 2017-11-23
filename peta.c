@@ -88,7 +88,7 @@ void PrintPetaNormal(Peta peta, Unit * unit){
         printf("%2d ┃", i);
         for(int j = 0; j < peta.n_kol; j++){
             printf(" ");
-            if((unit != NULL) && ((abs(i - unit->coordinate.X) + abs(j - unit->coordinate.Y)) <= unit->movp)){
+            if((unit != NULL) && (peta.m[i][j]->unit != unit) && ((abs(i - unit->coordinate.X) + abs(j - unit->coordinate.Y)) <= unit->movp)){
                 printf("%s", WHITE_BACK);
             }
             if(peta.m[i][j]->unit != NULL){
@@ -96,7 +96,7 @@ void PrintPetaNormal(Peta peta, Unit * unit){
                     printf("%s", "\x1B[1m\x1B[4m");
                 }
                 printf("%s", CharToColor(peta.m[i][j]->unit->owner->color));
-                printf("%c", GetUnitType(*peta.m[i][j]->unit)[0]);
+                printf("%c", GetUnitType(*peta.m[i][j]->unit));
             } else {
                 printf(" ");
             }

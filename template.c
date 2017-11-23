@@ -1,79 +1,55 @@
+#include <stdlib.h>
 #include "template.h"
 #include "point.h"
 
-Point P1 = MakePOINT(1,1);
-Unit king = MakeUnit(
-	10, 10, 
-    1, 1, 
-    'm', 1, 
-    NULL, 1, 
-    0, 'k', NULL);
-
-Unit archer = MakeUnit(
-	10, 10, 
-    1, 1, 
-    'r', 1, 
-    NULL, 1, 
-    0, 'a', NULL);
-
-Unit swordsman = MakeUnit(
-	10, 10, 
-    1, 1, 
-    'm', 1, 
-   	NULL, 1, 
-    0, 's', NULL);
-
-Unit mage = MakeUnit(
-	10, 10, 
-    1, 1, 
-    'r', 1, 
-    NULL, 1, 
-    0, 'm', NULL);
-
 Unit CreateUnitKing(Player * P, int brs, int kol)
 {
-	Unit u;
-	u = CopyUnit(king);
-	Point p1;
-	p1 = MakePOINT(brs, kol);
-	SetUnitCoordinate(&u, p1);
-	SetUnitOwner(&u, P);
+    Point p1 = MakePOINT(brs, kol);
+    Unit u = MakeUnit(
+        10, 10,
+        5, 5,
+        'M', 1,
+        p1, 1,
+        0, 'K', P);
 
-	return u;
+    return u;
 }
 
 Unit CreateUnitArcher(Player * P, int brs, int kol)
 {
-	Unit u;
-	u = CopyUnit(archer);
-	Point p1;
-	p1 = MakePOINT(brs, kol);
-	SetUnitCoordinate(&u, p1);
-	SetUnitOwner(&u, P);
+    Point p1 = MakePOINT(brs, kol);
+    Unit u = MakeUnit(
+        10, 10,
+        1, 1,
+        'R', 1,
+        p1, 1,
+        0, 'A', P);
 
-	return u;
+    return u;
 }
 
 Unit CreateUnitSwordsman(Player * P, int brs, int kol)
 {
-	Unit u;
-	u = CopyUnit(swordsman);
-	Point p1;
-	p1 = MakePOINT(brs, kol);
-	SetUnitCoordinate(&u, p1);
-	SetUnitOwner(&u, P);
+    Point p1 = MakePOINT(brs, kol);
+    Unit u = MakeUnit(
+        10, 10,
+        1, 1,
+        'M', 1,
+        p1, 1,
+        0, 'S', P);
 
-	return u;
+    return u;
 }
 
 Unit CreateUnitMage(Player * P, int brs, int kol)
 {
-	Unit u;
-	u = CopyUnit(mage);
-	Point p1;
-	p1 = MakePOINT(brs, kol);
-	SetUnitCoordinate(&u, p1);
-	SetUnitOwner(&u, P);
+    Point p1 = MakePOINT(brs, kol);
+    Unit u = MakeUnit(
+        10, 10,
+        1, 1,
+        'R', 1,
+        p1, 1,
+        0, 'M', P);
 
-	return u;
+    return u;
 }
