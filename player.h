@@ -2,7 +2,7 @@
 #define _PLAYER_H_
 
 #include "listunit.h"
-#include "listvillage.h"
+#include "listbuilding.h"
 
 /* PLAYER1 dan PLAYER2 dijadikan global untuk memudahkan memindahkan data,
  * tetapi tetap harus diinisialisasi menggunakan InitializePlayer()
@@ -16,7 +16,7 @@ typedef struct tVillage Village;
 typedef struct tPlayer{    
     int gold;
     ListUnit list_unit;         // Kosong
-    ListVillage list_village;
+    ListBuilding list_building;
     int income;
     int upkeep;
     char color;
@@ -28,6 +28,6 @@ void InitializePlayer(Player *player, char c);
 // Inisialisasi semua field struct Player, kedua list kosong
 
 void AddUnit(Player *player, Unit *unit);
-void AddVillage(Player *player, Village *village);
+void AddBuilding(Player *player, Building *building);
 
 #endif

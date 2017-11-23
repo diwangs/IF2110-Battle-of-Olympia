@@ -1,15 +1,16 @@
+#include <stdlib.h>
 #include "building.h"
 
 /* Constructor */
 
-Building MakeBuilding(Point coordinate, int income, Player * owner, char * type)
+Building * MakeBuilding(Point coordinate, int income, Player * owner, char type)
 {
-    Building b1;
+    Building * b1 = malloc(sizeof(Building));
 
-    SetBuildingCoordinate(&b1, coordinate);
-    SetBuildingIncome(&b1, income);
-    SetBuildingOwner(&b1, owner);
-    SetBuildingType(&b1, type);
+    SetBuildingCoordinate(b1, coordinate);
+    SetBuildingIncome(b1, income);
+    SetBuildingOwner(b1, owner);
+    SetBuildingType(b1, type);
 
     return b1;
 }
@@ -31,6 +32,10 @@ Player * GetBuildingOwner(Building building)
     return building.owner;
 }
 
+char GetBuildingType(Building building){
+    return building.type;
+}
+
 /* Setter */
 
 void SetBuildingCoordinate(Building * building, Point coordinate)
@@ -48,13 +53,17 @@ void SetBuildingOwner(Building * building, Player * owner)
     building->owner = owner;
 }
 
+void SetBuildingType(Building * building, char type){
+    building->type = type;
+}
+
 /* Misc Functions */
 
 Building CopyBuilding(Building building)
 {
     Building b1;
 
-    b1 = MakeBuilding(
+    b1 = *MakeBuilding(
         GetBuildingCoordinate(building),
         GetBuildingIncome(building),
         GetBuildingOwner(building),

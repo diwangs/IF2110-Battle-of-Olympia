@@ -2,13 +2,13 @@
 #include <time.h>
 #include <stdlib.h>
 #include "listunit.h"
-#include "listvillage.h"
+#include "listbuilding.h"
 #include "peta.h"
 #include "game.h"
 #include "mesincmd.h"
 #include "player.h"
 #include "unit.h"
-#include "village.h"
+#include "building.h"
 #include "point.h"
 #include "pcolor/pcolor.h"
 #include "util.h"
@@ -26,43 +26,53 @@ void NewGame(){
     MakePeta(brs_peta, kol_peta, &PETA);
 
     // inisialisasi pemain
+    Building * btemp;
     InitializePlayer(&PLAYER1, 'R');
-    Unit king1 = MakeUnit(100, 100, 5, 5, 'M', true, MakePOINT(brs_peta - 2, 1), 5, false, "KING", &PLAYER1);
+    Unit king1 = MakeUnit(100, 100, 6, 6, 'M', true, MakePOINT(brs_peta - 2, 1), 5, false, "KING", &PLAYER1);
     AddUnit(&PLAYER1, &king1);
     AddUnitToPeta(&king1, &PETA);
-    SetPetakPetaOwnerType(PETA.m[king1.coordinate.X][king1.coordinate.Y], &PLAYER1, 'T');
-    SetPetakPetaOwnerType(PETA.m[king1.coordinate.X - 1][king1.coordinate.Y], &PLAYER1, 'C');
-    SetPetakPetaOwnerType(PETA.m[king1.coordinate.X + 1][king1.coordinate.Y], &PLAYER1, 'C');
-    SetPetakPetaOwnerType(PETA.m[king1.coordinate.X][king1.coordinate.Y - 1], &PLAYER1, 'C');
-    SetPetakPetaOwnerType(PETA.m[king1.coordinate.X][king1.coordinate.Y + 1], &PLAYER1, 'C');
+
+    btemp = MakeBuilding(king1.coordinate, 1, &PLAYER1, 'T');
+    AddBuilding(&PLAYER1, btemp); AddBuildingToPeta(btemp, &PETA);
+    btemp = MakeBuilding(PlusDelta(king1.coordinate, 1, 0), 1, &PLAYER1, 'C');
+    AddBuilding(&PLAYER1, btemp); AddBuildingToPeta(btemp, &PETA);
+    btemp = MakeBuilding(PlusDelta(king1.coordinate, -1, 0), 1, &PLAYER1, 'C');
+    AddBuilding(&PLAYER1, btemp); AddBuildingToPeta(btemp, &PETA);
+    btemp = MakeBuilding(PlusDelta(king1.coordinate, 0, 1), 1, &PLAYER1, 'C');
+    AddBuilding(&PLAYER1, btemp); AddBuildingToPeta(btemp, &PETA);
+    btemp = MakeBuilding(PlusDelta(king1.coordinate, 0, -1), 1, &PLAYER1, 'C');
+    AddBuilding(&PLAYER1, btemp); AddBuildingToPeta(btemp, &PETA);
 
     InitializePlayer(&PLAYER2, 'Y');
-    Unit king2 = MakeUnit(100, 100, 10, 10, 'M', true, MakePOINT(1, kol_peta - 2), 5, false, "KING", &PLAYER2);
+    Unit king2 = MakeUnit(100, 100, 6, 6, 'M', true, MakePOINT(1, kol_peta - 2), 5, false, "KING", &PLAYER2);
     AddUnit(&PLAYER2, &king2);
     AddUnitToPeta(&king2, &PETA);
-    SetPetakPetaOwnerType(PETA.m[king2.coordinate.X][king2.coordinate.Y], &PLAYER2, 'T');
-    SetPetakPetaOwnerType(PETA.m[king2.coordinate.X - 1][king2.coordinate.Y], &PLAYER2, 'C');
-    SetPetakPetaOwnerType(PETA.m[king2.coordinate.X + 1][king2.coordinate.Y], &PLAYER2, 'C');
-    SetPetakPetaOwnerType(PETA.m[king2.coordinate.X][king2.coordinate.Y - 1], &PLAYER2, 'C');
-    SetPetakPetaOwnerType(PETA.m[king2.coordinate.X][king2.coordinate.Y + 1], &PLAYER2, 'C');
 
-    // TODO Generate Village
-    int nvillage = brs_peta * kol_peta / 20;
-    for(int i = 0; i < nvillage; i++)
+    btemp = MakeBuilding(king2.coordinate, 1, &PLAYER2, 'T');
+    AddBuilding(&PLAYER2, btemp); AddBuildingToPeta(btemp, &PETA);
+    btemp = MakeBuilding(PlusDelta(king2.coordinate, 1, 0), 1, &PLAYER2, 'C');
+    AddBuilding(&PLAYER2, btemp); AddBuildingToPeta(btemp, &PETA);
+    btemp = MakeBuilding(PlusDelta(king2.coordinate, -1, 0), 1, &PLAYER2, 'C');
+    AddBuilding(&PLAYER2, btemp); AddBuildingToPeta(btemp, &PETA);
+    btemp = MakeBuilding(PlusDelta(king2.coordinate, 0, 1), 1, &PLAYER2, 'C');
+    AddBuilding(&PLAYER2, btemp); AddBuildingToPeta(btemp, &PETA);
+    btemp = MakeBuilding(PlusDelta(king2.coordinate, 0, -1), 1, &PLAYER2, 'C');
+    AddBuilding(&PLAYER2, btemp); AddBuildingToPeta(btemp, &PETA);
+
+    int nbuilding = brs_peta * kol_peta / 20;
+    for(int i = 0; i < nbuilding; i++)
         while(true){
             int r = rand() % brs_peta;
             int c = rand() % kol_peta;
-            if(PETA.m[r][c]->type == 'N'){
-                Village village = MakeVillage(MakePOINT(r, c), 1, NULL);
-                PETA.m[r][c]->village = &village;
-                PETA.m[r][c]->type = 'V';
-                PETA.m[r][c]->owner = village.owner;
+            if(PETA.m[r][c]->building == NULL){
+                AddBuildingToPeta(MakeBuilding(MakePOINT(r, c), 1, NULL, 'V'), &PETA);
                 break;
             }
         }
 
     // Call
     current = &PLAYER1;
+    PrintPetaNormal(PETA, NULL);
 
     TurnHandler();
 }
@@ -143,6 +153,7 @@ void PlayerTurn(Player * player) {
             printf("Map Coordinate C : ");
             get_cmd();
             y = KataToInt(Cmd);
+
             if (IsInsidePeta(PETA, x, y) && CanUnitMoveThatFar(currentUnit, x, y) && !IsPetakOccupied(x, y)) {
                 PETA.m[Absis(currentUnit->coordinate)][Ordinat(currentUnit->coordinate)]->unit = NULL;
                 MoveUnit(currentUnit, x, y);
@@ -150,13 +161,13 @@ void PlayerTurn(Player * player) {
                 printf("You have moved your %s to ", GetUnitType(*currentUnit));
                 TulisPOINT(GetUnitCoordinate(*currentUnit));
                 printf("\n");
-                // cek village
-                if(PETA.m[currentUnit->coordinate.X][currentUnit->coordinate.Y]->type == 'V'){
-                    Village * v = PETA.m[currentUnit->coordinate.X][currentUnit->coordinate.Y]->village;
-                    v->owner = current;
-                    PETA.m[currentUnit->coordinate.X][currentUnit->coordinate.Y]->owner = current;
-                    AddVillage(current, v);
-                    printf("You acquire a village!\n");
+
+                PetakPeta * p = PETA.m[currentUnit->coordinate.X][currentUnit->coordinate.Y];
+                if((p->building != NULL) && (p->building->type == 'V')){
+                    Building * b = p->building;
+                    b->owner = current;
+                    AddBuilding(current, b);
+                    printf("You acquire a building!\n");
                 }
             } else {
                 printf("You can't move your unit to there.\n");

@@ -3,7 +3,7 @@
 
 #include "unit.h"
 #include "point.h"
-#include "village.h"
+#include "building.h"
 #include "boolean.h"
 
 #define BRS_MAX 100
@@ -13,10 +13,8 @@ typedef struct tPlayer Player;
 
 typedef struct PetakPeta {
     Point coordinate;
-    char type;    // T, C, V, atau N
-    Player * owner;
     Unit * unit;
-    Village * village;
+    Building * building;
 } PetakPeta;
 
 typedef PetakPeta * pPetakPeta;
@@ -29,23 +27,13 @@ typedef struct Peta {
 
 extern Peta PETA;
 
-void MakePetakPeta(Point coor, char type, PetakPeta *petak);
-// void MakePetakPeta(Point coor, char type, Unit *unit, PetakPeta *petak);
+void MakePetakPeta(Point coor, PetakPeta *petak);
 /* Membuat sebuah PetakPeta */
-
-void SetPetakPetaOwner(PetakPeta * peta, Player * owner);
-void SetPetakPetaType(PetakPeta * peta, char type);
-void SetPetakPetaOwnerType(PetakPeta * peta, Player * owner, char type);
-
-void SetPointPetaOwner(Point c, Peta * peta, Player * owner);
-void SetPointPetaType(Point c, Peta * peta, char type);
-void SetPointPetaOwnerType(Point c, Peta * peta, Player * owner, char type);
 
 void MakePeta(int nb, int nk, Peta *peta);
 
-void AddUnitToCoordinate(Unit * u, Point c, Peta *peta);
-void AddVillageToCoordinate(Village * v, Point c, Peta *peta);
 void AddUnitToPeta(Unit * u, Peta * peta);
+void AddBuildingToPeta(Building * b, Peta * peta);
 
 boolean IsPetakOccupied(int brs, int kol);
 boolean IsInsidePeta(Peta peta, int r, int c);

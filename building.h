@@ -10,26 +10,26 @@ typedef struct tBuilding {
     Point coordinate;
     int income;         // banyak gold yang diberikan building tiap turn
     Player * owner;       // 0 jika tidak ada, else 1 atau 2
-    char * type;
+    char type;
 } Building;
 
 /* Constructor */
 
-Building MakeBuilding(Point coordinate, int income, Player * owner, char * type);
+Building * MakeBuilding(Point coordinate, int income, Player * owner, char type);
 
 /* Getter */
 
 Point GetBuildingCoordinate(Building building);
 int GetBuildingIncome(Building building);
-int GetBuildingOwner(Building building);
-char * GetBuildingType(Building building);
+Player * GetBuildingOwner(Building building);
+char GetBuildingType(Building building);
 
 /* Setter */
 
 void SetBuildingCoordinate(Building * building, Point coordinate);
 void SetBuildingIncome(Building * building, int income);
 void SetBuildingOwner(Building * building, Player * owner);
-void SetBuildingType(Building * building, char * type);
+void SetBuildingType(Building * building, char type);
 
 /* Misc Functions */
 
