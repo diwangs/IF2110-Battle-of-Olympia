@@ -21,6 +21,6 @@ void AddUnit(Player *player, Unit *unit) {
 }
 
 void AddBuilding(Player *player, Building *building) {
-    player->income += 1;
+    player->income += building->income;
     InsVLastListBuilding(&player->list_building, building);
 }

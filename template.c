@@ -1,11 +1,12 @@
 #include <stdlib.h>
 #include "template.h"
 #include "point.h"
+#include "unit.h"
 
-Unit CreateUnitKing(Player * P, int brs, int kol)
+Unit * CreateUnitKing(Player * P, int brs, int kol)
 {
     Point p1 = MakePOINT(brs, kol);
-    Unit u = MakeUnit(
+    Unit * u = MakeUnit(
         10, 10,
         5, 5,
         'M', 1,
@@ -15,10 +16,10 @@ Unit CreateUnitKing(Player * P, int brs, int kol)
     return u;
 }
 
-Unit CreateUnitArcher(Player * P, int brs, int kol)
+Unit * CreateUnitArcher(Player * P, int brs, int kol)
 {
     Point p1 = MakePOINT(brs, kol);
-    Unit u = MakeUnit(
+    Unit * u = MakeUnit(
         10, 10,
         1, 1,
         'R', 1,
@@ -28,10 +29,10 @@ Unit CreateUnitArcher(Player * P, int brs, int kol)
     return u;
 }
 
-Unit CreateUnitSwordsman(Player * P, int brs, int kol)
+Unit * CreateUnitSwordsman(Player * P, int brs, int kol)
 {
     Point p1 = MakePOINT(brs, kol);
-    Unit u = MakeUnit(
+    Unit * u = MakeUnit(
         10, 10,
         1, 1,
         'M', 1,
@@ -41,10 +42,10 @@ Unit CreateUnitSwordsman(Player * P, int brs, int kol)
     return u;
 }
 
-Unit CreateUnitMage(Player * P, int brs, int kol)
+Unit * CreateUnitMage(Player * P, int brs, int kol)
 {
     Point p1 = MakePOINT(brs, kol);
-    Unit u = MakeUnit(
+    Unit * u = MakeUnit(
         10, 10,
         1, 1,
         'R', 1,

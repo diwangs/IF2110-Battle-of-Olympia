@@ -5,24 +5,24 @@
 typedef struct tPlayer Player;
 
 /* Constructor */
-Unit MakeUnit(int max_health, int health, 
+Unit * MakeUnit(int max_health, int health, 
     int max_movp, int movp, 
     char attack_type, boolean can_attack, 
     Point coordinate, int price, 
     boolean is_dead, char type, Player * owner)
 {
-    Unit u1;
-    SetUnitMaxHealth(&u1, max_health);
-    SetUnitHealth(&u1, health);
-    SetUnitMaxMovePoint(&u1, max_movp);
-    SetUnitMovePoint(&u1, movp);
-    SetUnitAttackType(&u1, attack_type);
-    SetUnitCanAttack(&u1, can_attack);
-    SetUnitCoordinate(&u1, coordinate);
-    SetUnitPrice(&u1, price);
-    SetUnitIsDead(&u1, is_dead);
-    SetUnitType(&u1, type);
-    SetUnitOwner(&u1, owner);
+    Unit * u1 = malloc(sizeof(Unit));
+    SetUnitMaxHealth(u1, max_health);
+    SetUnitHealth(u1, health);
+    SetUnitMaxMovePoint(u1, max_movp);
+    SetUnitMovePoint(u1, movp);
+    SetUnitAttackType(u1, attack_type);
+    SetUnitCanAttack(u1, can_attack);
+    SetUnitCoordinate(u1, coordinate);
+    SetUnitPrice(u1, price);
+    SetUnitIsDead(u1, is_dead);
+    SetUnitType(u1, type);
+    SetUnitOwner(u1, owner);
 
     return u1;
 }
@@ -155,7 +155,7 @@ void SetUnitOwner(Unit * unit, Player * owner)
 
 Unit CopyUnit(Unit unit, Point coordinate)
 {
-    Unit u1;
+    Unit * u1;
     u1 = MakeUnit(
         GetUnitMaxHealth(unit)
         , GetUnitHealth(unit)
@@ -170,7 +170,7 @@ Unit CopyUnit(Unit unit, Point coordinate)
         , GetUnitOwner(unit)
     );
 
-    return u1;
+    return *u1;
 }
 
 boolean CanUnitMoveThatFar(Unit * unit, int x, int y)

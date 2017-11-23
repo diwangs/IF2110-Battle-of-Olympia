@@ -3,9 +3,9 @@
 
 #include "unit.h"
 
-Unit CreateUnitKing(Player * P, int brs, int kol);
-Unit CreateUnitArcher(Player * P, int brs, int kol);
-Unit CreateUnitSwordsman(Player * P, int brs, int kol);
-Unit CreateUnitMage(Player * P, int brs, int kol);
+Unit * CreateUnitKing(Player * P, int brs, int kol);
+Unit * CreateUnitArcher(Player * P, int brs, int kol);
+Unit * CreateUnitSwordsman(Player * P, int brs, int kol);
+Unit * CreateUnitMage(Player * P, int brs, int kol);
 
 #endif

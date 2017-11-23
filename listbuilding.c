@@ -1,7 +1,7 @@
-#include "listbuilding.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include "peta.h"
+#include "listbuilding.h"
 
 /* PROTOTYPE */
 /****************** TEST ListBuilding KOSONG ******************/
@@ -370,8 +370,8 @@ void PrintListBuildingByType(ListBuilding L, char type)
 				printf(" | Occupied");
 			}
 			printf("\n");
+            count++;
 		}
-		count++;
 		P = NextBuilding(P);
 	}
 }

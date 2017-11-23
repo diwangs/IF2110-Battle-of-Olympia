@@ -25,7 +25,7 @@ typedef struct tUnit {
 } Unit;
 
 /* Constructor */
-Unit MakeUnit(int max_health, 
+Unit * MakeUnit(int max_health, 
     int health, int max_movp, 
     int movp, char attack_type, 
     boolean can_attack, Point coordinate, 

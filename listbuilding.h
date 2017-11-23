@@ -8,8 +8,10 @@
 
 #include "boolean.h"
 #include "building.h"
+#include "peta.h"
 
 #define Nil NULL
+
 
 /* Definisi Type Data */
 typedef Building * infotypebuilding;

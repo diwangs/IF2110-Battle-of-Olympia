@@ -27,40 +27,27 @@ void NewGame(){
     MakePeta(brs_peta, kol_peta, &PETA);
 
     // inisialisasi pemain
-    Building * btemp;
     InitializePlayer(&PLAYER1, 'R');
-    Unit king1 = CreateUnitKing(&PLAYER1, brs_peta - 2, 1);
-    AddUnit(&PLAYER1, &king1);
-    AddUnitToPeta(&king1, &PETA);
+    Unit * king1 = CreateUnitKing(&PLAYER1, brs_peta - 2, 1);
+    BindPlayerUnitPeta(&PLAYER1, king1, &PETA);
 
-    btemp = MakeBuilding(king1.coordinate, 1, &PLAYER1, 'T');
-    AddBuilding(&PLAYER1, btemp); AddBuildingToPeta(btemp, &PETA);
-    btemp = MakeBuilding(PlusDelta(king1.coordinate, 1, 0), 1, &PLAYER1, 'C');
-    AddBuilding(&PLAYER1, btemp); AddBuildingToPeta(btemp, &PETA);
-    btemp = MakeBuilding(PlusDelta(king1.coordinate, -1, 0), 1, &PLAYER1, 'C');
-    AddBuilding(&PLAYER1, btemp); AddBuildingToPeta(btemp, &PETA);
-    btemp = MakeBuilding(PlusDelta(king1.coordinate, 0, 1), 1, &PLAYER1, 'C');
-    AddBuilding(&PLAYER1, btemp); AddBuildingToPeta(btemp, &PETA);
-    btemp = MakeBuilding(PlusDelta(king1.coordinate, 0, -1), 1, &PLAYER1, 'C');
-    AddBuilding(&PLAYER1, btemp); AddBuildingToPeta(btemp, &PETA);
+    BindPlayerBuildingPeta(&PLAYER1, MakeBuilding(king1->coordinate, 1, &PLAYER1, 'T'), &PETA);
+    BindPlayerBuildingPeta(&PLAYER1, MakeBuilding(PlusDelta(king1->coordinate, 1, 0), 0, &PLAYER1, 'C'), &PETA);
+    BindPlayerBuildingPeta(&PLAYER1, MakeBuilding(PlusDelta(king1->coordinate, -1, 0), 0, &PLAYER1, 'C'), &PETA);
+    BindPlayerBuildingPeta(&PLAYER1, MakeBuilding(PlusDelta(king1->coordinate, 0, 1), 0, &PLAYER1, 'C'), &PETA);
+    BindPlayerBuildingPeta(&PLAYER1, MakeBuilding(PlusDelta(king1->coordinate, 0, -1), 0, &PLAYER1, 'C'), &PETA);
 
     InitializePlayer(&PLAYER2, 'Y');
-    Unit king2 = CreateUnitKing(&PLAYER2, 1, kol_peta - 2);
-    AddUnit(&PLAYER2, &king2);
-    AddUnitToPeta(&king2, &PETA);
+    Unit * king2 = CreateUnitKing(&PLAYER2, 1, kol_peta - 2);
+    BindPlayerUnitPeta(&PLAYER2, king2, &PETA);
 
-    btemp = MakeBuilding(king2.coordinate, 1, &PLAYER2, 'T');
-    AddBuilding(&PLAYER2, btemp); AddBuildingToPeta(btemp, &PETA);
-    btemp = MakeBuilding(PlusDelta(king2.coordinate, 1, 0), 1, &PLAYER2, 'C');
-    AddBuilding(&PLAYER2, btemp); AddBuildingToPeta(btemp, &PETA);
-    btemp = MakeBuilding(PlusDelta(king2.coordinate, -1, 0), 1, &PLAYER2, 'C');
-    AddBuilding(&PLAYER2, btemp); AddBuildingToPeta(btemp, &PETA);
-    btemp = MakeBuilding(PlusDelta(king2.coordinate, 0, 1), 1, &PLAYER2, 'C');
-    AddBuilding(&PLAYER2, btemp); AddBuildingToPeta(btemp, &PETA);
-    btemp = MakeBuilding(PlusDelta(king2.coordinate, 0, -1), 1, &PLAYER2, 'C');
-    AddBuilding(&PLAYER2, btemp); AddBuildingToPeta(btemp, &PETA);
+    BindPlayerBuildingPeta(&PLAYER2, MakeBuilding(king2->coordinate, 1, &PLAYER2, 'T'), &PETA);
+    BindPlayerBuildingPeta(&PLAYER2, MakeBuilding(PlusDelta(king2->coordinate, 1, 0), 0, &PLAYER2, 'C'), &PETA);
+    BindPlayerBuildingPeta(&PLAYER2, MakeBuilding(PlusDelta(king2->coordinate, -1, 0), 0, &PLAYER2, 'C'), &PETA);
+    BindPlayerBuildingPeta(&PLAYER2, MakeBuilding(PlusDelta(king2->coordinate, 0, 1), 0, &PLAYER2, 'C'), &PETA);
+    BindPlayerBuildingPeta(&PLAYER2, MakeBuilding(PlusDelta(king2->coordinate, 0, -1), 0, &PLAYER2, 'C'), &PETA);
 
-    int nbuilding = brs_peta * kol_peta / 20;
+    int nbuilding = brs_peta * kol_peta / 10;
     for(int i = 0; i < nbuilding; i++)
         while(true){
             int r = rand() % brs_peta;
@@ -186,17 +173,83 @@ void PlayerTurn(Player * player) {
             selection = KataToInt(Cmd);
             if (IsNthUnitExist(player->list_unit, selection)) {
                 currentUnit = SelectNthUnit(player->list_unit, selection);
-                printf("You are now selecting %d\n", GetUnitType(*currentUnit));
+                printf("You are now selecting %c\n", GetUnitType(*currentUnit));
             } else {
                 printf("Unit doesn't exist.\n");
                 executed = false;
             }
         } else if (cmpkata(recruit,Cmd)) {
-            // Check if any castle is empty
-            boolean empty_exists = false;
+            Unit * king = current->list_unit.First->info;
+            Building * tower = current->list_building.First->info;
+            Unit * u;
+            int HARGA_UNIT[] = {-1, 5, 6, 7}; // archer, swordsman, mage
+            if(!EQ(king->coordinate, tower->coordinate)){
+                printf("Your king is not at the tower\n");
+            } else if(current->gold < 5) {
+                printf("You dont have enough gold\n");
+            } else {
+                // Check if any castle is empty
+                address_building f = current->list_building.First;
+                while(f != NULL){
+                    if(f->info->type == 'C')
+                        if(!IsPetakOccupied(f->info->coordinate.X, f->info->coordinate.Y))
+                            break;
 
+                    f = f->next;
+                }
+                if(f == NULL){
+                    printf("No empty castle available\n");
+                } else {
+                    PrintListBuildingByType(current->list_building, 'C');
+                    while(true){
+                        printf("Select where you want to recruit your unit > ");
+                        get_cmd();
+                        int s = KataToInt(Cmd);
+                        while((0 > s) || (s > 4)){
+                            printf("Select where you want to recruit your unit > ");
+                            get_cmd();
+                            s = KataToInt(Cmd);
+                        }
+                        
+                        f = current->list_building.First;
+                        while((f != NULL) && (s > 0)){
+                            if(f->info->type == 'C')
+                                s--;
+                            if(s == 0) break;
+                            f = f->next;
+                        }
+                        if(!IsPetakOccupied(f->info->coordinate.X, f->info->coordinate.Y))
+                            break;
+                        printf("Space is occupied\n");
+                    }
+
+                    printf("1. Archer | %dG\n", HARGA_UNIT[1]);
+                    printf("2. Swordsman | %dG\n", HARGA_UNIT[2]);
+                    printf("3. White Mage | %dG\n", HARGA_UNIT[3]);
+                    printf("Select the unit you want to recruit > ");
+                    get_cmd();
+                    int s = KataToInt(Cmd);
+                    while((0 > s) || (s > 3) || (HARGA_UNIT[s] > current->gold)){
+                        printf("Select the unit you want to recruit > ");
+                        get_cmd();
+                        s = KataToInt(Cmd);
+                    }
+                    switch(s){
+                        case 1 : u = CreateUnitArcher(current, f->info->coordinate.X, f->info->coordinate.Y); break;
+                        case 2 : u = CreateUnitSwordsman(current, f->info->coordinate.X, f->info->coordinate.Y); break;
+                        case 3 : u = CreateUnitMage(current, f->info->coordinate.X, f->info->coordinate.Y); break;
+                    }
+                    BindPlayerUnitPeta(current, u, &PETA);
+                    printf("%p\n", u);
+                    current->gold -= HARGA_UNIT[s];
+                }
+            }
         } else if (cmpkata(attack,Cmd)) {
-            printf("attack...\n");
+            if(currentUnit->can_attack){
+
+            } else {
+                printf("This unit cannot attack.\n");
+            }
         } else if (cmpkata(map,Cmd)) {
             PrintPetaNormal(PETA, NULL);
         } else if (cmpkata(info,Cmd)) {
@@ -215,3 +268,12 @@ void PlayerTurn(Player * player) {
     }
 }
 
+void BindPlayerUnitPeta(Player * player, Unit * unit, Peta * peta){
+    AddUnit(player, unit);
+    AddUnitToPeta(unit, peta);
+}
+
+void BindPlayerBuildingPeta(Player * player, Building * building, Peta * peta){
+    AddBuilding(player, building);
+    AddBuildingToPeta(building, peta);
+}
