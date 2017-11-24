@@ -1,10 +1,10 @@
+#include <stdlib.h>
 #include "listunit.h"
 #include "listbuilding.h"
 #include "player.h"
 
-Player PLAYER1, PLAYER2;
-
-void InitializePlayer(Player *player, char c) {
+Player * CreatePlayer(char c) {
+    Player * player = malloc(sizeof(Player));
     player->gold = 50;
 
     CreateEmptyListUnit(&(player->list_unit));
@@ -13,6 +13,8 @@ void InitializePlayer(Player *player, char c) {
     player->income = 0;
     player->upkeep = 0;
     player->color = c;
+    
+    return player;
 }
 
 void AddUnit(Player *player, Unit *unit) {

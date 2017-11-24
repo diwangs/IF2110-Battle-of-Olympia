@@ -9,7 +9,7 @@ Unit * CreateUnitKing(Player * P, int brs, int kol)
     Unit * u = MakeUnit(
         10, 10,
         5, 5,
-        'M', 1,
+        2, 'M', 1,
         p1, 1,
         0, 'K', P);
 
@@ -22,7 +22,7 @@ Unit * CreateUnitArcher(Player * P, int brs, int kol)
     Unit * u = MakeUnit(
         10, 10,
         1, 1,
-        'R', 1,
+        2, 'R', 1,
         p1, 1,
         0, 'A', P);
 
@@ -35,7 +35,7 @@ Unit * CreateUnitSwordsman(Player * P, int brs, int kol)
     Unit * u = MakeUnit(
         10, 10,
         1, 1,
-        'M', 1,
+        3, 'M', 1,
         p1, 1,
         0, 'S', P);
 
@@ -48,7 +48,7 @@ Unit * CreateUnitMage(Player * P, int brs, int kol)
     Unit * u = MakeUnit(
         10, 10,
         1, 1,
-        'R', 1,
+        2, 'R', 1,
         p1, 1,
         0, 'M', P);
 

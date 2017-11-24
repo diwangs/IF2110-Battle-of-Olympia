@@ -25,9 +25,10 @@ typedef struct tUnit {
 } Unit;
 
 /* Constructor */
-Unit * MakeUnit(int max_health, 
-    int health, int max_movp, 
-    int movp, char attack_type, 
+Unit * MakeUnit(
+    int max_health, int health,
+    int max_movp, int movp,
+    int attack, char attack_type, 
     boolean can_attack, Point coordinate, 
     int price, boolean is_dead, 
     char type, Player * owner);

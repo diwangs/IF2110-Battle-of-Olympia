@@ -5,24 +5,26 @@
 typedef struct tPlayer Player;
 
 /* Constructor */
-Unit * MakeUnit(int max_health, int health, 
-    int max_movp, int movp, 
-    char attack_type, boolean can_attack, 
-    Point coordinate, int price, 
-    boolean is_dead, char type, Player * owner)
+Unit * MakeUnit(
+    int max_health, int health,
+    int max_movp, int movp,
+    int attack, char attack_type, 
+    boolean can_attack, Point coordinate, 
+    int price, boolean is_dead, 
+    char type, Player * owner)
 {
     Unit * u1 = malloc(sizeof(Unit));
     SetUnitMaxHealth(u1, max_health);
     SetUnitHealth(u1, health);
     SetUnitMaxMovePoint(u1, max_movp);
     SetUnitMovePoint(u1, movp);
+    SetUnitAttack(u1, attack);
     SetUnitAttackType(u1, attack_type);
     SetUnitCanAttack(u1, can_attack);
     SetUnitCoordinate(u1, coordinate);
     SetUnitPrice(u1, price);
     SetUnitIsDead(u1, is_dead);
     SetUnitType(u1, type);
-    SetUnitOwner(u1, owner);
 
     return u1;
 }
@@ -161,6 +163,7 @@ Unit CopyUnit(Unit unit, Point coordinate)
         , GetUnitHealth(unit)
         , GetUnitMaxMovePoint(unit)
         , GetUnitMovePoint(unit)
+        , GetUnitAttack(unit)
         , GetUnitAttackType(unit)
         , GetUnitCanAttack(unit)
         , coordinate

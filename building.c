@@ -9,7 +9,7 @@ Building * MakeBuilding(Point coordinate, int income, Player * owner, char type)
 
     SetBuildingCoordinate(b1, coordinate);
     SetBuildingIncome(b1, income);
-    SetBuildingOwner(b1, owner);
+    b1->owner = owner;
     SetBuildingType(b1, type);
 
     return b1;

@@ -22,10 +22,7 @@ typedef struct tPlayer{
     char color;
 } Player;
 
-extern Player PLAYER1, PLAYER2;
-
-void InitializePlayer(Player *player, char c);
-// Inisialisasi semua field struct Player, kedua list kosong
+Player * CreatePlayer(char c);
 
 void AddUnit(Player *player, Unit *unit);
 void AddBuilding(Player *player, Building *building);

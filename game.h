@@ -13,7 +13,7 @@ typedef struct tUnit Unit;
 typedef struct tBuilding Building;
 
 extern boolean GAME_RUNNING;
-Player * current;
+extern Player * current;
 
 void NewGame();
 /* Membuat Game Baru,
@@ -34,5 +34,9 @@ void PrintTurnInfo(Player * player, Unit * currentUnit);
 void PlayerTurn(Player * player);
 /* Mengatur bagian turn player
  */
+
+void MoveHandler(Player * current, Unit * currentUnit);
+void AttackHandler(Player * current, Unit * currentUnit);
+void RecruitHandler(Player * current, Unit * currentUnit);
 
 #endif

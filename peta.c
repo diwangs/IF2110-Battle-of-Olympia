@@ -8,8 +8,6 @@
 #include "listbuilding.h"
 #include "player.h"
 
-Peta PETA;
-
 void MakePetakPeta(Point coor, PetakPeta *petak){
     petak->coordinate = coor;
     petak->unit = NULL;
@@ -88,7 +86,7 @@ void PrintPetaNormal(Peta peta, Unit * unit){
         printf("%2d ┃", i);
         for(int j = 0; j < peta.n_kol; j++){
             printf(" ");
-            if((unit != NULL) && (peta.m[i][j]->unit != unit) && ((abs(i - unit->coordinate.X) + abs(j - unit->coordinate.Y)) <= unit->movp)){
+            if((unit != NULL) && (peta.m[i][j]->unit == NULL) && ((abs(i - unit->coordinate.X) + abs(j - unit->coordinate.Y)) <= unit->movp)){
                 printf("%s", WHITE_BACK);
             }
             if(peta.m[i][j]->unit != NULL){
