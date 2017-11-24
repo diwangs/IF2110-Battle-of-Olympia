@@ -10,10 +10,10 @@ boolean EOP;
 static FILE * pita;
 static int retval;
 
-void start_save()
+void start_save(char mode)
 {
   /* Menyiapkan mesin karakter untuk menulis ke file */
-  pita = fopen("pitakar.txt","w");
+  pita = fopen("pitakar.txt", "w");
 }
 
 void write(char c)

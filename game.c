@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
+#include "save.h"
 #include "listunit.h"
 #include "listbuilding.h"
 #include "peta.h"
@@ -182,8 +183,8 @@ void PlayerTurn(Player * player) {
             // kurangi gold
             current->gold -= current->upkeep;
             executed = true;
-        } else if (cmpkata(save,Cmd)) {
-            printf("save...\n");
+        } else if (cmpkata(save,Cmd)    ) {
+            save_game(PLAYER1, PLAYER2, current, PETA);
         } else if (cmpkata(keluar,Cmd)) {
             exit(0);
         } else {
