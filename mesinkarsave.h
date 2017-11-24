@@ -11,7 +11,7 @@
 extern char CC;
 extern boolean EOP;
 
-void start_save();
+void start_save(char mode);
 /* Menyiapkan mesin karakter untuk menulis ke file */
 
 void write(char c);

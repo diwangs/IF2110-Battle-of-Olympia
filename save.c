@@ -1,88 +1,80 @@
-#include "listunit.h"
-#include "listvillage.h"
 #include "mesinsave.h"
-#include "point.h"
+#include "peta.h"
 #include "unit.h"
-#include "village.h"
+#include "listunit.h"
+#include "player.h"
 #include <stdio.h>
-#include <string.h>
 
-void save_units(ListUnit units)
+void save_units(ListUnit L)
 {
-	/* Menyimpan data tentang semua unit dalam list units ke dalam file */
-	
-	//Jika kosong, segera keluar dari fungsi.
-	if(IsEmptyListUnit(units))
+	address_unit curr_unit = FirstUnit(L);
+
+	while(curr_unit != NULL)
 	{
-		write_separator();
-		return;
+		Unit unit = *(InfoUnit(curr_unit));
+		char data[100];
+
+		sprintf(data, "%d %d %d %d %d %c %d %d %d %d %d %c %c", GetUnitMaxHealth(unit), GetUnitHealth(unit),
+			GetUnitAttack(unit), GetUnitMaxMovePoint(unit), GetUnitMovePoint(unit),
+			GetUnitAttackType(unit), GetUnitCanAttack(unit), Absis(GetUnitCoordinate(unit)),
+			Ordinat(GetUnitCoordinate(unit)), GetUnitPrice(unit), GetUnitIsDead(unit),
+			GetUnitType(unit), (GetUnitOwner(unit))->color);
+
+		write_data(data);
+
+		curr_unit = NextUnit(curr_unit);
 	}
 
-	//Simpan setiap unit sebagai string dalam file, dimana setiap baris merepresentasikan data mengenai satu unit.
-	address_unit current_unit = FirstUnit(units);
-	Unit unit;
-	char unit_data[NMax];
-
-	while(current_unit != LastUnit(units))
-	{
-		unit = InfoUnit(current_unit);
-
-		sprintf(unit_data, "%d %d %d %d %d %c %d %d %d %d %d", GetUnitMaxHealth(unit), GetUnitHealth(unit),
-			GetUnitAttack(unit), GetUnitMaxMovePoint(unit), GetUnitMovePoint(unit), GetUnitAttackType(unit), GetUnitCanAttack(unit),
-			Absis(GetUnitCoordinate(unit)), Ordinat(GetUnitCoordinate(unit)), GetUnitPrice(unit), GetUnitIsDead(unit));
-
-		write_data(unit_data);
-
-		current_unit = NextUnit(current_unit);
-	}
-
-	unit = InfoUnit(current_unit);
-
-	sprintf(unit_data, "%d %d %d %d %d %c %d %d %d %d %d", GetUnitMaxHealth(unit), GetUnitHealth(unit),
-		GetUnitAttack(unit), GetUnitMaxMovePoint(unit), GetUnitMovePoint(unit), GetUnitAttackType(unit), GetUnitCanAttack(unit),
-		Absis(GetUnitCoordinate(unit)), Ordinat(GetUnitCoordinate(unit)), GetUnitPrice(unit), GetUnitIsDead(unit));
-
-	write_data(unit_data);
-
-	//Tulis separator sebagai penanda batas terakhir data tentang unit
 	write_separator();
 }
 
-void save_villages(ListVillage villages)
+void save_player(Player* p)
 {
-	/* Menyimpan data tentang semua village dalam list villages ke dalam file */
-
-	//Jika kosong, tidak ada yang perlu diproses
-	if(IsEmptyListVillage(villages))
-	{
-		write_separator();
-		return;
-	}
-
-	//Simpan data setiap village sebagai baris yang berbeda dalam file
-	address_village current_village = FirstVillage(villages);
-	Village v;
-	char village_data[100];
-
-	while(current_village != LastVillage(villages))
-	{
-		v = InfoVillage(current_village);
-
-		sprintf(village_data, "%d %d %d %d", Absis(GetVillageCoordinate(v)), Ordinat(GetVillageCoordinate(v)), GetVillageIncome(v), GetVillageOwner(v));
-
-		write_data(village_data);
-
-		current_village = NextVillage(current_village);
-	}
-
-	v = InfoVillage(current_village);
-
-	sprintf(village_data, "%d %d %d %d", Absis(GetVillageCoordinate(v)), Ordinat(GetVillageCoordinate(v)), GetVillageIncome(v), GetVillageOwner(v));
-	printf("%s\n", village_data);
-	// printf("%c\n", village_data[strlen(village_data)]);
-
-	write_data(village_data);
-
-	//Tulis separator sebagai penanda akhir data mengenai village
+	char data[100];
+	sprintf(data, "%d %d %d %c", p->gold, p->income, p->upkeep, p->color);
+	write_data(data);
 	write_separator();
+}
+
+void save_buildings(ListBuilding L)
+{
+	address_building curr_building = FirstBuilding(L);
+
+	while(curr_building != NULL)
+	{
+		Building b = *(InfoBuilding(curr_building));
+
+		char data[100];
+		sprintf(data, "%d %d %d %c %c", Absis(GetBuildingCoordinate(b)),
+			Ordinat(GetBuildingCoordinate(b)), GetBuildingIncome(b),
+			(GetBuildingOwner(b))->color, GetBuildingType(b));
+
+		write_data(data);
+		curr_building = NextBuilding(curr_building);
+	}
+	write_separator();
+}
+
+void save_map(Peta p)
+{
+	char data[100];
+	sprintf(data, "%d %d", p.n_brs, p.n_kol);
+	write_data(data);
+	write_separator();
+}
+
+void save_game(Player* p1, Player* p2, Player* current, Peta p)
+{
+	init_machine('w');
+	save_player(p1);
+	save_units((*p1).list_unit);
+	save_buildings((*p1).list_building);
+	save_player(p2);
+	save_units((*p2).list_unit);
+	save_buildings((*p2).list_building);
+	save_map(p);
+	if((*current).color == (*p1).color) write_data("P1");
+	else write_data("P2");
+	write_separator();
+	end_machine();
 }
