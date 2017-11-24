@@ -133,10 +133,13 @@ void PlayerTurn(Player * player) {
 	
     // income
     current->gold += current->income;
-    // refill movp
+	
+    // refill movp + heal
     address_unit u = current->list_unit.First;
     while(u != NULL){
         u->info->movp = u->info->max_movp;
+	if (u->info->type == 'M')
+            HealHandler(current, u->info);
         u = u->next;
     }
 
@@ -262,6 +265,31 @@ void MoveHandler(Player * current, Unit * currentUnit){
     }
 }
 
+void HealHandler(Player * current, Unit * currentUnit){
+    Point p = currentUnit->coordinate;
+
+    int newHealth;
+    Unit * u;
+    Point offset[] = {MakePOINT(p.X + 1,p.Y), MakePOINT(p.X - 1, p.Y), MakePOINT(p.X, p.Y + 1), MakePOINT(p.X, p.Y - 1)};
+
+    for(int i = 0; i < 4; i++)
+        if ((offset[i].X < 0) || (offset[i].Y < 0) || (offset[i].X > PETA.n_brs-1) || (offset[i].Y > PETA.n_kol-1)) continue;
+        else if(PETA.m[offset[i].X][offset[i].Y]->unit != NULL){
+            u = PETA.m[offset[i].X][offset[i].Y]->unit;
+            if (u->owner == current){
+                //do heal
+                newHealth = (u->health + currentUnit->attack);
+                if (newHealth > u->max_health)
+                    newHealth -= (newHealth % u->max_health);
+                if (newHealth != u->health){
+                        printf("%s%c%s (%d, %d) health increased by %d ", CharToColor(u->owner->color), u->type, NORMAL, u->coordinate.X, u->coordinate.Y, newHealth - u->health);
+                        puts("");
+                        u->health = newHealth;
+                    }
+            }
+        }
+}
+
 void AttackHandler(Player * current, Unit * currentUnit){
     if(!currentUnit->can_attack){
         printf("This unit cannot attack.\n");
@@ -274,7 +302,8 @@ void AttackHandler(Player * current, Unit * currentUnit){
     Point offset[] = {MakePOINT(p.X + 1,p.Y), MakePOINT(p.X - 1, p.Y), MakePOINT(p.X, p.Y + 1), MakePOINT(p.X, p.Y - 1)};
 
     for(int i = 0; i < 4; i++)
-        if(PETA.m[offset[i].X][offset[i].Y]->unit != NULL){
+	if ((offset[i].X < 0) || (offset[i].Y < 0) || (offset[i].X > PETA.n_brs-1) || (offset[i].Y > PETA.n_kol-1)) continue;
+        else if(PETA.m[offset[i].X][offset[i].Y]->unit != NULL){
             u = PETA.m[offset[i].X][offset[i].Y]->unit;
             c++;
             printf("%d. %s%c%s (%d, %d)", c, CharToColor(u->owner->color), u->type, NORMAL, u->coordinate.X, u->coordinate.Y);
@@ -294,7 +323,8 @@ void AttackHandler(Player * current, Unit * currentUnit){
     }
 
     for(int i = 0; (i < 4) && (c > 0); i++)
-        if(PETA.m[offset[i].X][offset[i].Y]->unit != NULL){
+	if ((offset[i].X < 0) || (offset[i].Y < 0) || (offset[i].X > PETA.n_brs-1) || (offset[i].Y > PETA.n_kol-1)) continue;
+        else if(PETA.m[offset[i].X][offset[i].Y]->unit != NULL){
             u = PETA.m[offset[i].X][offset[i].Y]->unit;
             c--;
         }
