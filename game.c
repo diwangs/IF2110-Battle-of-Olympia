@@ -14,12 +14,14 @@
 #include "pcolor/pcolor.h"
 #include "util.h"
 #include "template.h"
+#include "stackt.h"
 
 Player * PLAYER1, * PLAYER2;
 Player * current;
 address_playerQ currentq;
 Peta PETA;
 PlayerQ PQ;
+Stack moves;
 
 void NewGame(){
     srand(time(NULL));
@@ -70,6 +72,7 @@ void NewGame(){
 
     AddPlayer(&PQ, PLAYER1);
     AddPlayer(&PQ, PLAYER2);
+    CreateEmptyStack(&moves);
 
     currentq = (FirstPlayerQ(PQ));
 
@@ -143,15 +146,16 @@ void PlayerTurn(Player * player) {
     PrintTurnInfo(player, currentUnit);
     PrintPetaNormal(PETA, NULL);
 
-
     while (!executed) {
         printf("Your Command > ");
         get_cmd();
+
         if (cmpkata(move,Cmd)) {
             MoveHandler(current, currentUnit);
         } else if (cmpkata(undo,Cmd)) {
-            printf("undo...\n");
+            UndoHandler(currentUnit);
         } else if (cmpkata(change_unit,Cmd)) {
+            CreateEmptyStack(&moves);
             PrintListUnit(player->list_unit);
             printf("Please enter the no. of unit you want to select: ");
             get_cmd();
@@ -164,14 +168,17 @@ void PlayerTurn(Player * player) {
                 executed = false;
             }
         } else if (cmpkata(recruit,Cmd)) {
+            CreateEmptyStack(&moves);
             RecruitHandler(current, currentUnit);
         } else if (cmpkata(attack,Cmd)) {
+            CreateEmptyStack(&moves);
             AttackHandler(current, currentUnit);
         } else if (cmpkata(map,Cmd)) {
             PrintPetaNormal(PETA, NULL);
         } else if (cmpkata(info,Cmd)) {
             PrintTurnInfo(current, currentUnit);
         } else if (cmpkata(end_turn,Cmd)) {
+            CreateEmptyStack(&moves);
             // kurangi gold
             current->gold -= current->upkeep;
             executed = true;
@@ -183,6 +190,35 @@ void PlayerTurn(Player * player) {
             printf("Command not found.\n");
         }
     }
+}
+
+void UndoHandler(Unit * currentUnit)
+{
+    if (IsEmptyStack(moves)) {
+        printf("You haven't made any moves!\n");
+        return;
+    }
+
+    ElmtStack S;
+    S = InfoTop(moves);
+
+    PetakPeta * p = PETA.m[S.current.X][S.current.Y];
+    if((p->building != NULL) && (p->building->type == 'V')){
+        Building * b = p->building;
+        b->owner = current;
+        DelLastBuilding(current);
+    }
+
+    currentUnit->coordinate = S.prev;
+    currentUnit->movp += (abs(S.current.X-S.prev.X) + abs(S.current.Y-S.prev.Y));
+
+    Pop(&moves, &S);
+
+    printf("You have undo your %c move from ", currentUnit->type);
+    TulisPOINT(S.current);
+    printf(" to ");
+    TulisPOINT(S.prev);
+    printf("\n");
 }
 
 void MoveHandler(Player * current, Unit * currentUnit){
@@ -201,12 +237,16 @@ void MoveHandler(Player * current, Unit * currentUnit){
     y = KataToInt(Cmd);
 
     if (IsInsidePeta(PETA, x, y) && CanUnitMoveThatFar(currentUnit, x, y) && !IsPetakOccupied(x, y)) {
+        ElmtStack S;
+        S.prev = GetUnitCoordinate(*currentUnit);
         PETA.m[Absis(currentUnit->coordinate)][Ordinat(currentUnit->coordinate)]->unit = NULL;
         MoveUnit(currentUnit, x, y);
         AddUnitToPeta(currentUnit, &PETA);
         printf("You have moved your %c to ", GetUnitType(*currentUnit));
         TulisPOINT(GetUnitCoordinate(*currentUnit));
         printf("\n");
+        S.current = GetUnitCoordinate(*currentUnit);
+        Push(&moves, S);
 
         PetakPeta * p = PETA.m[currentUnit->coordinate.X][currentUnit->coordinate.Y];
         if((p->building != NULL) && (p->building->type == 'V')){
