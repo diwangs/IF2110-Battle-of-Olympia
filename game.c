@@ -282,7 +282,7 @@ void HealHandler(Player * current, Unit * currentUnit){
                 if (newHealth > u->max_health)
                     newHealth -= (newHealth % u->max_health);
                 if (newHealth != u->health){
-                        printf("%s%c%s (%d, %d) health increased by %d ", CharToColor(u->owner->color), u->type, NORMAL, u->coordinate.X, u->coordinate.Y, newHealth - u->health);
+                        printf("Unit %s%c%s (%d, %d) health increased by %d ", CharToColor(u->owner->color), u->type, NORMAL, u->coordinate.X, u->coordinate.Y, newHealth - u->health);
                         puts("");
                         u->health = newHealth;
                     }
