@@ -30,6 +30,9 @@ void write_data(char* data);
 void write_separator();
 /* Menuliskan SEPARATOR yang menandakan akhir data dari salah satu jenis objek dalam game */
 
+void write_end();
+/* Menuliskan karakter penanada akhir savefile */
+
 void end_machine();
 /* Menutup file output sehingga output keluar */
 

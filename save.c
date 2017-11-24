@@ -12,7 +12,7 @@ void save_units(ListUnit L)
 	while(curr_unit != NULL)
 	{
 		Unit unit = *(InfoUnit(curr_unit));
-		char data[100];
+		char data[Nmax];
 
 		sprintf(data, "%d %d %d %d %d %c %d %d %d %d %d %c %c", GetUnitMaxHealth(unit), GetUnitHealth(unit),
 			GetUnitAttack(unit), GetUnitMaxMovePoint(unit), GetUnitMovePoint(unit),
@@ -30,7 +30,7 @@ void save_units(ListUnit L)
 
 void save_player(Player* p)
 {
-	char data[100];
+	char data[Nmax];
 	sprintf(data, "%d %d %d %c", p->gold, p->income, p->upkeep, p->color);
 	write_data(data);
 	write_separator();
@@ -44,7 +44,7 @@ void save_buildings(ListBuilding L)
 	{
 		Building b = *(InfoBuilding(curr_building));
 
-		char data[100];
+		char data[Nmax];
 		sprintf(data, "%d %d %d %c %c", Absis(GetBuildingCoordinate(b)),
 			Ordinat(GetBuildingCoordinate(b)), GetBuildingIncome(b),
 			(GetBuildingOwner(b))->color, GetBuildingType(b));
@@ -57,7 +57,7 @@ void save_buildings(ListBuilding L)
 
 void save_map(Peta p)
 {
-	char data[100];
+	char data[Nmax];
 	sprintf(data, "%d %d", p.n_brs, p.n_kol);
 	write_data(data);
 	write_separator();
@@ -76,5 +76,6 @@ void save_game(Player* p1, Player* p2, Player* current, Peta p)
 	if((*current).color == (*p1).color) write_data("P1");
 	else write_data("P2");
 	write_separator();
+	write_end();
 	end_machine();
 }

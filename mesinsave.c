@@ -58,6 +58,12 @@ void write_separator()
 	write('\n');
 }
 
+void write_end()
+{
+	/* Menuliskan karakter penanada akhir savefile */
+	write('.');
+}
+
 void end_machine()
 {
 	/* Menutup file output */
