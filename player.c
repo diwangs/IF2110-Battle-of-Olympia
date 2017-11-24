@@ -26,3 +26,9 @@ void AddBuilding(Player *player, Building *building) {
     player->income += building->income;
     InsVLastListBuilding(&player->list_building, building);
 }
+
+void DelLastBuilding(Player *player) {
+    Building * building;
+    DelVLastListBuilding(&player->list_building, &building);
+    player->income -= building->income;
+}

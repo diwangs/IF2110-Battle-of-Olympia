@@ -35,6 +35,7 @@ void PlayerTurn(Player * player);
 /* Mengatur bagian turn player
  */
 
+void UndoHandler(Unit * currentUnit);
 void MoveHandler(Player * current, Unit * currentUnit);
 void AttackHandler(Player * current, Unit * currentUnit);
 void RecruitHandler(Player * current, Unit * currentUnit);
