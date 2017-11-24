@@ -1,8 +1,8 @@
 /* File : playerqueue.h */
 /* Definisi ADT Queue termodifikasi dengan representasi list linier sirkuler (semacam round robin)*/
 
-#ifndef playerqueue_H
-#define playerqueue_H
+#ifndef PLAYERQ_H
+#define PLAYERQ_H
 
 #include "boolean.h"
 #include "player.h"
@@ -10,7 +10,7 @@
 /* Definisi elemen dan address */
 typedef struct tElmtqueue *address_playerQ;
 typedef struct tElmtqueue { 
-	Player info;
+	Player * info;
 	address_playerQ next;
 } ElmtPlayerQ;
 typedef struct {
@@ -40,7 +40,7 @@ void CreateEmptyPlayerQ (PlayerQ * Q);
 /* Proses : Melakukan alokasi, membuat sebuah Q kosong */
 
 /* *** Destruktor *** */
-address_playerQ AlokElmtPlayerQ (Player P);
+address_playerQ AlokElmtPlayerQ (Player * P);
 /* Mengirimkan address hasil alokasi sebuah elemen */
 /* Jika alokasi berhasil, maka address tidak nil, dan misalnya */
 /* menghasilkan P, maka Info(P)=X, Next(P)=Nil */
@@ -51,14 +51,14 @@ void DealokElmtPlayerQ(address_playerQ A);
 /* F.S. Q menjadi tidak terdefinisi lagi */
 
 /* *** Primitif Add/Delete *** */
-void AddPlayer (PlayerQ * Q, Player P);
+void AddPlayer (PlayerQ * Q, Player * P);
 /* Proses: Menambahkan X pada Q dengan aturan FIFO */
 /* I.S. Q mungkin kosong, tabel penampung elemen Q TIDAK penuh */
 /* F.S. X menjadi TAIL yang baru, TAIL "maju" dengan mekanisme circular buffer */
 void NextPlayer(PlayerQ *Q);
 /* I.S. Q tidak kosong
 F.S. First(Q) pindah ke Next(First(Q)) */
-void DelPlayer (PlayerQ * Q, Player *P);
+void DelPlayer (PlayerQ * Q, Player ** P);
 /* Proses: Menghapus X pada Q dengan aturan FIFO */
 /* I.S. Q tidak mungkin kosong */
 /* F.S. X = nilai elemen HEAD pd I.S., HEAD "maju" dengan mekanisme circular buffer; 

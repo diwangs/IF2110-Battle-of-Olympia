@@ -7,6 +7,7 @@
 #include "game.h"
 #include "mesincmd.h"
 #include "player.h"
+#include "playerq.h"
 #include "unit.h"
 #include "building.h"
 #include "point.h"
@@ -16,7 +17,9 @@
 
 Player * PLAYER1, * PLAYER2;
 Player * current;
+address_playerQ currentq;
 Peta PETA;
+PlayerQ PQ;
 
 void NewGame(){
     srand(time(NULL));
@@ -64,7 +67,11 @@ void NewGame(){
         }
 
     // Call
-    current = PLAYER1;
+
+    AddPlayer(&PQ, PLAYER1);
+    AddPlayer(&PQ, PLAYER2);
+
+    currentq = (FirstPlayerQ(PQ));
 
     TurnHandler();
 }
@@ -72,13 +79,9 @@ void NewGame(){
 void TurnHandler(){
     // untuk diganti dengan queue
     while(true){
-        if(current == PLAYER1){
-            PlayerTurn(PLAYER1);
-            current = PLAYER2;
-        } else {
-            PlayerTurn(PLAYER2);
-            current = PLAYER1;
-        }
+        current = InfoElmtPlayerQ(currentq);
+        PlayerTurn(current);
+        currentq = (NextElmtPlayerQ(currentq));
     }
 }
 

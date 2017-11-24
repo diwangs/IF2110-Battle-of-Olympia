@@ -14,7 +14,7 @@ int CountPlayer (PlayerQ Q) {
 
 void CreateEmptyPlayerQ (PlayerQ * Q) {FirstPlayerQ(*Q) = NULL;}
 
-address_playerQ AlokElmtPlayerQ (Player P) {
+address_playerQ AlokElmtPlayerQ (Player * P) {
 	address_playerQ A = (address_playerQ) malloc(sizeof(ElmtPlayerQ));
 	if (A == NULL) return NULL;
 	InfoElmtPlayerQ(A) = P;
@@ -24,7 +24,7 @@ address_playerQ AlokElmtPlayerQ (Player P) {
 
 void DealokElmtPlayerQ(address_playerQ A) {free(A);}
 
-void AddPlayer (PlayerQ * Q, Player P) {
+void AddPlayer (PlayerQ * Q, Player * P) {
 	address_playerQ A = AlokElmtPlayerQ(P);
 	if (A != NULL) {
 		if (CountPlayer(*Q) == 0) {
@@ -41,7 +41,7 @@ void AddPlayer (PlayerQ * Q, Player P) {
 
 void NextPlayer(PlayerQ *Q) {FirstPlayerQ(*Q) = NextElmtPlayerQ(FirstPlayerQ(*Q));}
 
-void DelPlayer (PlayerQ * Q, Player *P) {
+void DelPlayer (PlayerQ * Q, Player ** P) {
 	address_playerQ Del = FirstPlayerQ(*Q);
 	*P = InfoElmtPlayerQ(Del);
 	if (CountPlayer(*Q) == 1) FirstPlayerQ(*Q) = NULL; else {
