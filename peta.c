@@ -59,6 +59,7 @@ void PrintPetaNormal(Peta peta, Unit * unit){
     printf("\n");
 
     printf("   ┏");
+
     for(int i = 0; i < peta.n_kol; i++)
         if(i == peta.n_kol - 1)
             printf("━━━┓");

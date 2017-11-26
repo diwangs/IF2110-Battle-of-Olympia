@@ -12,7 +12,7 @@ void IgnoreBlank()
 	/* Mengabaikan satu atau beberapa BLANK
 	   I.S. : CC sembarang 
 	   F.S. : CC ≠ BLANK atau CC = MARK */
-	while(CC == BLANK && CC != MARK) ADV();
+	while((CC == BLANK || CC == '\n') && CC != MARK) ADV();
 }
 
 void STARTKATA()
@@ -49,6 +49,8 @@ void ADVKATA()
 	{
 		EndData = true;
 		ADV();
+		IgnoreBlank();
+		SalinKata();
 	}
 	else
 	{
