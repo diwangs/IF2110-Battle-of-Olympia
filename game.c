@@ -173,6 +173,7 @@ void PlayerTurn(Player * player) {
         printf("=");
     printf("\n");
     Unit * currentUnit = player->list_unit.First->info;
+    system("clear");
     PrintTurnInfo(player, currentUnit);
     PrintPetaNormal(PETA, NULL);
 
@@ -234,17 +235,22 @@ void UndoHandler(Unit * currentUnit)
     ElmtStack S;
     S = InfoTop(moves);
 
+    unBindPlayerUnitPeta(currentUnit->owner, currentUnit, &PETA);
+
     PetakPeta * p = PETA.m[S.current.X][S.current.Y];
     if((p->building != NULL) && (p->building->type == 'V')){
         Building * b = p->building;
         b->owner = current;
         DelLastBuilding(current);
+        b->owner = NULL;
     }
 
     currentUnit->coordinate = S.prev;
-    currentUnit->movp += (abs(S.current.X-S.prev.X) + abs(S.current.Y-S.prev.Y));
+    currentUnit->movp = S.prevmovp;
 
     Pop(&moves, &S);
+
+    BindPlayerUnitPeta(currentUnit->owner, currentUnit, &PETA);
 
     printf("You have undo your %c move from ", currentUnit->type);
     TulisPOINT(S.current);
@@ -271,6 +277,7 @@ void MoveHandler(Player * current, Unit * currentUnit){
     if (IsInsidePeta(PETA, x, y) && CanUnitMoveThatFar(currentUnit, x, y) && !IsPetakOccupied(x, y)) {
         ElmtStack S;
         S.prev = GetUnitCoordinate(*currentUnit);
+        S.prevmovp = GetUnitMovePoint(*currentUnit);
         PETA.m[Absis(currentUnit->coordinate)][Ordinat(currentUnit->coordinate)]->unit = NULL;
         MoveUnit(currentUnit, x, y);
         AddUnitToPeta(currentUnit, &PETA);
@@ -415,11 +422,16 @@ void AttackHandler(Player * current, Unit * currentUnit){
 }
 
 void RecruitHandler(Player * current, Unit * currentUnit){
-    Unit * king = current->list_unit.First->info;
     Building * tower = current->list_building.First->info;
     Unit * u;
     int HARGA_UNIT[] = {-1, 5, 6, 7}; // archer, swordsman, mage
-    if(!EQ(king->coordinate, tower->coordinate)){
+
+    if (currentUnit->type != 'K') {
+        printf("Change unit to king first\n");
+        return;
+    }
+
+    if(!EQ(currentUnit->coordinate, tower->coordinate)){
         printf("Your king is not at the tower\n");
         return;
     } else if(current->gold < 5) {
@@ -480,6 +492,7 @@ void RecruitHandler(Player * current, Unit * currentUnit){
         case 3 : u = CreateUnitMage(current, f->info->coordinate.X, f->info->coordinate.Y); break;
     }
     BindPlayerUnitPeta(current, u, &PETA);
+    u->movp = 0;
     current->gold -= HARGA_UNIT[s];
 }
 
