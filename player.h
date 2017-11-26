@@ -25,6 +25,7 @@ typedef struct tPlayer{
 Player * CreatePlayer(char c);
 
 void AddUnit(Player *player, Unit *unit);
+void DelUnit(Player *player, Unit *unit);
 void AddBuilding(Player *player, Building *building);
 void DelLastBuilding(Player *player);
 
