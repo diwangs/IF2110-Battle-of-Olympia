@@ -61,6 +61,27 @@ void save_map(Peta p)
 	char data[NMax];
 	sprintf(data, "%d %d", p.n_brs, p.n_kol);
 	write_data(data);
+
+	for(int i = 0; i < p.n_brs; i++)
+	{
+		for(int j = 0; j < p.n_kol; j++)
+		{
+			if(p.m[i][j]->building != NULL)
+			{
+				Building b = *(p.m[i][j]->building);
+				Player* owner = GetBuildingOwner(b);
+				char owner_color;
+				if(owner == NULL) owner_color = 'Z';
+				else owner_color = owner->color;
+				sprintf(data, "%d %d %d %c %c",
+					Absis(GetBuildingCoordinate(b)), Ordinat(GetBuildingCoordinate(b)),
+					GetBuildingIncome(b), owner_color,
+					GetBuildingType(b));
+				write_data(data);
+			}
+		}
+	}
+
 	write_separator();
 }
 
