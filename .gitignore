@@ -3,4 +3,5 @@ a.out
 driver.c
 a.exe
 *.o
-*.a
+*.a.gdb_history
+.gdb*

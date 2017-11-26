@@ -84,6 +84,7 @@ void NewGame(){
 void LoadGame()
 {
 	load(&PLAYER1, &PLAYER2, &current, &PETA, &PQ);
+    getchar();
 	currentq = FirstPlayerQ(PQ);
 	TurnHandler();
 }

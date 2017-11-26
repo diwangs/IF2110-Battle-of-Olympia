@@ -93,6 +93,7 @@ void load_player(Player** p)
 	{
 		infotypeunit unit;
 		load_unit(&unit, *p);
+        unit->owner = *p;
 		InsVLastListUnit(&((*p)->list_unit), unit);
 	}
 
@@ -100,7 +101,6 @@ void load_player(Player** p)
 
 	while(!EndData)
 	{
-		// printf("%c %d\n", CKata.TabKata[0], CKata.TabKata[0]);
 		Building* building;
 		load_building(&building, *p);
 		InsVLastListBuilding(&((*p)->list_building), building);
@@ -160,7 +160,7 @@ void load(Player** p1, Player** p2, Player** current, Peta* p, PlayerQ* pq)
 {
 	STARTKATA();
 	load_player(p1);
-	printf("p2\n");
+    printf("%c %d %d %d\n", (*p1)->color, (*p1)->gold, (*p1)->income, (*p1)->upkeep);
 	load_player(p2);
 	load_map(*p1, *p2, p);
 	CreateEmptyPlayerQ(pq);
