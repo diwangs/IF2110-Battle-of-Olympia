@@ -30,6 +30,7 @@ void TurnHandler();
  */
 
 void BindPlayerUnitPeta(Player * player, Unit * unit, Peta * peta);
+void unBindPlayerUnitPeta(Player * player, Unit * unit, Peta * peta);
 void BindPlayerBuildingPeta(Player * player, Building * building, Peta * peta);
 
 void PrintTurnInfo(Player * player, Unit * currentUnit);

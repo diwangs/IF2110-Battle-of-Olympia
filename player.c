@@ -22,6 +22,11 @@ void AddUnit(Player *player, Unit *unit) {
     InsVLastListUnit(&player->list_unit, unit);
 }
 
+void DelUnit(Player *player, Unit *unit) {
+    player->upkeep -= 1;
+    DelPListUnit(&player->list_unit, unit);
+}
+
 void AddBuilding(Player *player, Building *building) {
     player->income += building->income;
     InsVLastListBuilding(&player->list_building, building);

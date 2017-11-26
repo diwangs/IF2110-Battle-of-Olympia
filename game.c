@@ -20,12 +20,14 @@
 
 Player * PLAYER1, * PLAYER2;
 Player * current;
+boolean wincondition;
 address_playerQ currentq;
 Peta PETA;
 PlayerQ PQ;
 Stack moves;
 
 void NewGame(){
+    wincondition = false;
     srand(time(NULL));
     int brs_peta, kol_peta;
 
@@ -83,6 +85,7 @@ void NewGame(){
 
 void LoadGame()
 {
+    wincondition = false;
 	load(&PLAYER1, &PLAYER2, &current, &PETA, &PQ);
     getchar();
 	currentq = FirstPlayerQ(PQ);
@@ -95,6 +98,7 @@ void TurnHandler(){
         current = InfoElmtPlayerQ(currentq);
         PlayerTurn(current);
         currentq = (NextElmtPlayerQ(currentq));
+        if (wincondition) return;
     }
 }
 
@@ -112,16 +116,15 @@ void PrintTurnInfo(Player * player, Unit * currentUnit){
 
     // print units
     printf("Current unit:\n");
-    address_unit f = player->list_unit.First;
     printf("%c(%2d, %2d) | Movement Point : %3d/%3d | HP %3d/%3d | Can attack : %s\n",
-            f->info->type,
-            f->info->coordinate.X,
-            f->info->coordinate.Y,
-            f->info->movp,
-            f->info->max_movp,
-            f->info->health,
-            f->info->max_health,
-            f->info->can_attack == 1 ? "Yes" : "No"
+            currentUnit->type,
+            currentUnit->coordinate.X,
+            currentUnit->coordinate.Y,
+            currentUnit->movp,
+            currentUnit->max_movp,
+            currentUnit->health,
+            currentUnit->max_health,
+            currentUnit->can_attack == 1 ? "Yes" : "No"
             );
 }
 
@@ -143,10 +146,11 @@ void PlayerTurn(Player * player) {
     // income
     current->gold += current->income;
 	
-    // refill movp + heal
+    // refill movp + heal + reset can_attack
     address_unit u = current->list_unit.First;
     while(u != NULL){
         u->info->movp = u->info->max_movp;
+        u->info->can_attack = true;
 	if (u->info->type == 'M')
             HealHandler(current, u->info);
         u = u->next;
@@ -202,6 +206,8 @@ void PlayerTurn(Player * player) {
         } else {
             printf("Command not found.\n");
         }
+
+        if (wincondition) executed = true;
     }
 }
 
@@ -307,19 +313,27 @@ void AttackHandler(Player * current, Unit * currentUnit){
    
     Point p = currentUnit->coordinate;
     int c = 0;
+    Unit *cc[4];
     Unit * u;
     Point offset[] = {MakePOINT(p.X + 1,p.Y), MakePOINT(p.X - 1, p.Y), MakePOINT(p.X, p.Y + 1), MakePOINT(p.X, p.Y - 1)};
 
     for(int i = 0; i < 4; i++)
-	if ((offset[i].X < 0) || (offset[i].Y < 0) || (offset[i].X > PETA.n_brs-1) || (offset[i].Y > PETA.n_kol-1)) continue;
-        else if(PETA.m[offset[i].X][offset[i].Y]->unit != NULL){
+    if ((offset[i].X < 0) || (offset[i].Y < 0) || (offset[i].X > PETA.n_brs-1) || (offset[i].Y > PETA.n_kol-1)) continue;
+        else if (PETA.m[offset[i].X][offset[i].Y]->unit != NULL){
             u = PETA.m[offset[i].X][offset[i].Y]->unit;
-            c++;
-            printf("%d. %s%c%s (%d, %d)", c, CharToColor(u->owner->color), u->type, NORMAL, u->coordinate.X, u->coordinate.Y);
-            printf(" | HP %d/%d", u->health, u->max_health);
-            printf(" | Attack Type %c", u->attack_type);
-            puts("");
+            if (u->owner != current){
+                    cc[++c] = u;
+                    printf("%d. %s%c%s (%d, %d)", c, CharToColor(u->owner->color), u->type, NORMAL, u->coordinate.X, u->coordinate.Y);
+                    printf(" | HP %d/%d", u->health, u->max_health);
+                    printf(" | Attack Type %c", u->attack_type);
+                    puts("");
+                }
         }
+
+    if (c == 0) {
+        printf("No enemy unit around your current unit\n");
+        return;
+    }
 
     printf("Current unit %s%c%s attack type is %c, attack point is %d\n", CharToColor(currentUnit->owner->color), currentUnit->type, NORMAL, currentUnit->attack_type, currentUnit->attack);
     int s;
@@ -331,12 +345,8 @@ void AttackHandler(Player * current, Unit * currentUnit){
         return;
     }
 
-    for(int i = 0; (i < 4) && (c > 0); i++)
-	if ((offset[i].X < 0) || (offset[i].Y < 0) || (offset[i].X > PETA.n_brs-1) || (offset[i].Y > PETA.n_kol-1)) continue;
-        else if(PETA.m[offset[i].X][offset[i].Y]->unit != NULL){
-            u = PETA.m[offset[i].X][offset[i].Y]->unit;
-            c--;
-        }
+    u = cc[s];
+
     printf("Selected %s%c%s (%d, %d)", CharToColor(u->owner->color), u->type, NORMAL, u->coordinate.X, u->coordinate.Y);
     printf(" | HP %d/%d", u->health, u->max_health);
     printf(" | Attack Type %c", u->attack_type);
@@ -346,7 +356,18 @@ void AttackHandler(Player * current, Unit * currentUnit){
     u->health -= currentUnit->attack;
 
     if (u->health <= 0){
-        printf("Enemy %s%c%s (%d, %d) is dead.", CharToColor(u->owner->color), u->type, NORMAL, u->coordinate.X, u->coordinate.Y);
+        printf("Enemy %s%c%s (%d, %d) is dead.\n", CharToColor(u->owner->color), u->type, NORMAL, u->coordinate.X, u->coordinate.Y);
+        if (u->type == 'K') {
+            printf("===============GAME OVER===============\n");
+            if(current == PLAYER1){
+                printf("%sPlayer 1%s has win this game!\n", CharToColor(PLAYER1->color), NORMAL);
+            } else {
+                printf("%sPlayer 2%s has win this game!\n", CharToColor(PLAYER2->color), NORMAL);
+            }
+            wincondition = 1;
+        }
+        unBindPlayerUnitPeta(u->owner, u, &PETA);
+        //dealokasi u
         return;
     }
 
@@ -357,9 +378,22 @@ void AttackHandler(Player * current, Unit * currentUnit){
 
         if(currentUnit->health <= 0){
             printf("Current unit %s%c%s is dead.\n", CharToColor(currentUnit->owner->color), currentUnit->type, NORMAL);
+            if (currentUnit->type == 'K') {
+                printf("===============GAME OVER===============\n");
+                if(current == PLAYER1){
+                    printf("%sPlayer 2%s has win this game!\n", CharToColor(PLAYER2->color), NORMAL);
+                } else {
+                    printf("%sPlayer 1%s has win this game!\n", CharToColor(PLAYER1->color), NORMAL);
+                }
+                wincondition = true;
+                return;
+            }
+            unBindPlayerUnitPeta(current, currentUnit, &PETA);
+            //dealokasi currentunit
         }
     }
     
+    currentUnit->can_attack = 0;
     printf("Enemy %s%c%s (%d, %d)", CharToColor(u->owner->color), u->type, NORMAL, u->coordinate.X, u->coordinate.Y);
     printf(" | HP %d/%d", u->health, u->max_health);
     printf(" | Attack Type %c", u->attack_type);
@@ -440,6 +474,12 @@ void BindPlayerUnitPeta(Player * player, Unit * unit, Peta * peta){
     unit->owner = player;
     AddUnit(player, unit);
     AddUnitToPeta(unit, peta);
+}
+
+void unBindPlayerUnitPeta(Player * player, Unit * unit, Peta * peta){
+    unit->owner = player;
+    DelUnit(player, unit);
+    DeleteUnitFromPeta(unit, peta);
 }
 
 void BindPlayerBuildingPeta(Player * player, Building * building, Peta * peta){
