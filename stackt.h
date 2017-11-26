@@ -17,6 +17,7 @@
 /* Contoh deklarasi variabel bertype stack dengan ciri TOP : */
 /* Versi I : dengan menyimpan tabel dan alamat top secara eksplisit*/
 typedef struct {
+	int prevmovp;
 	Point prev;
 	Point current;
 } ElmtStack;

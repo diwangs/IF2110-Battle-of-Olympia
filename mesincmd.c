@@ -13,8 +13,10 @@ void get_cmd(){
 	Cmd.Length = 0;
 	ADVC();
 	while (CCmd != 10) {
-		Cmd.TabKata[Cmd.Length] = toupper(CCmd);
-		Cmd.Length++;
+		if (Cmd.Length < 50){
+			Cmd.TabKata[Cmd.Length] = toupper(CCmd);
+			Cmd.Length++;
+		}
 		ADVC();
 	}
 }
@@ -25,7 +27,7 @@ boolean cmpkata(Kata K1, Kata K2){
 
 	if (K1.Length != K2.Length) eq = false;
 	else {
-		for (i=0; i<K1.Length-1; i++){
+		for (i=0; i<K1.Length; i++){
 			if (K1.TabKata[i] != K2.TabKata[i]) eq = false;
 		}
 	}
