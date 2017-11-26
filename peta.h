@@ -33,6 +33,7 @@ void MakePetakPeta(Point coor, PetakPeta *petak);
 void MakePeta(int nb, int nk, Peta *peta);
 
 void AddUnitToPeta(Unit * u, Peta * peta);
+void DeleteUnitFromPeta(Unit * u, Peta * peta);
 void AddBuildingToPeta(Building * b, Peta * peta);
 
 boolean IsPetakOccupied(int brs, int kol);
