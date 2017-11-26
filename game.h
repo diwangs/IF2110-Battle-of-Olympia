@@ -22,6 +22,9 @@ void NewGame();
  * Membuat 2 player baru,
  */
 
+void LoadGame();
+/* Load game yang sudah disimpan */
+
 void TurnHandler();
 /* Mengatur turn player berapa
  */

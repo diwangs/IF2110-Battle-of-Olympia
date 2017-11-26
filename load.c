@@ -4,6 +4,7 @@
 #include "mesinkarload.h"
 #include "mesinkataload.h"
 #include "point.h"
+#include "playerq.h"
 
 int kata_to_int(LKata K)
 {
@@ -17,98 +18,106 @@ int kata_to_int(LKata K)
 	return res;
 }
 
-void load_unit(infotypeunit u, Player* p)
+void load_unit(infotypeunit* u, Player* p)
 {
-	SetUnitMaxHealth(u, kata_to_int(CKata));
+	int max_health = kata_to_int(CKata);
 	ADVKATA();
-	SetUnitHealth(u, kata_to_int(CKata));
+	int health = kata_to_int(CKata);
 	ADVKATA();
-	SetUnitAttack(u, kata_to_int(CKata));
+	int attack = kata_to_int(CKata);
 	ADVKATA();
-	SetUnitMaxMovePoint(u, kata_to_int(CKata));
+	int maxmove = kata_to_int(CKata);
 	ADVKATA();
-	SetUnitMovePoint(u, kata_to_int(CKata));
+	int move = kata_to_int(CKata);
 	ADVKATA();
-	SetUnitAttackType(u, CKata.TabKata[0]);
+	char att_type = CKata.TabKata[0];
 	ADVKATA();
-	SetUnitCanAttack(u, kata_to_int(CKata));
+	boolean can_attack = kata_to_int(CKata);
 	ADVKATA();
 	int pos_x, pos_y;
 	pos_x = kata_to_int(CKata);
 	ADVKATA();
 	pos_y = kata_to_int(CKata);
-	SetUnitCoordinate(u, MakePOINT(pos_x, pos_y));
 	ADVKATA();
-	SetUnitPrice(u, kata_to_int(CKata));
+	int price = kata_to_int(CKata);
 	ADVKATA();
-	SetUnitIsDead(u, kata_to_int(CKata));
+	boolean is_dead = kata_to_int(CKata);
 	ADVKATA();
-	SetUnitType(u, CKata.TabKata[0]);
+	char type = CKata.TabKata[0];
 	ADVKATA();
-	SetUnitOwner(u, p);
 	ADVKATA();
+	*u = MakeUnit(max_health, health, maxmove, move, attack, att_type,
+		can_attack, MakePOINT(pos_x, pos_y), price, is_dead, type, p);
 }
 
-void load_building(infotypebuilding b, Player* p)
+void load_building(infotypebuilding* b, Player* p)
 {
 	int pos_x, pos_y;
 	pos_x = kata_to_int(CKata);
 	ADVKATA();
 	pos_y = kata_to_int(CKata);
-	SetBuildingCoordinate(b, MakePOINT(pos_x, pos_y));
 	ADVKATA();
-	SetBuildingIncome(b, kata_to_int(CKata));
+	int income = kata_to_int(CKata);
 	ADVKATA();
-	SetBuildingOwner(b, p);
 	ADVKATA();
-	SetBuildingType(b, CKata.TabKata[0]);
+	char type = CKata.TabKata[0];
 	ADVKATA();
+
+	*b = MakeBuilding(MakePOINT(pos_x, pos_y), income, p, type);
 }
 
-void load_player(Player* p)
+void load_player(Player** p)
 {
-	CreateEmptyListUnit(&(p->list_unit));
-	CreateEmptyListBuilding(&(p->list_building));
-
 	if(!EndData)
 	{
-		p->gold = kata_to_int(CKata);
+		int gold, income, upkeep;
+		gold = kata_to_int(CKata);
 		ADVKATA();
-		p->income = kata_to_int(CKata);
+		income = kata_to_int(CKata);
 		ADVKATA();
-		p->upkeep = kata_to_int(CKata);
+		upkeep = kata_to_int(CKata);
 		ADVKATA();
-		p->color = CKata.TabKata[0];
+		char color = CKata.TabKata[0];
+		*p = CreatePlayer(color);
+		(*p)->gold = gold;
+		(*p)->income = income;
+		(*p)->upkeep = upkeep;
 	}
 
-	CreateEmptyListUnit(&(p->list_unit));
+	CreateEmptyListUnit(&((*p)->list_unit));
+	CreateEmptyListBuilding(&((*p)->list_building));
 	ADVKATA();
+	EndData = false;
 
 	while(!EndData)
 	{
-		Unit unit;
-		load_unit(&unit, p);
-		InsVLastListUnit(&(p->list_unit), &unit);
+		infotypeunit unit;
+		load_unit(&unit, *p);
+		InsVLastListUnit(&((*p)->list_unit), unit);
 	}
 
-	ADVKATA();
+	EndData = false;
 
 	while(!EndData)
 	{
-		Building building;
-		load_building(&building, p);
-		InsVLastListBuilding(&(p->list_building), &building);
+		// printf("%c %d\n", CKata.TabKata[0], CKata.TabKata[0]);
+		Building* building;
+		load_building(&building, *p);
+		InsVLastListBuilding(&((*p)->list_building), building);
 	}
 
-	ADVKATA();
+	EndData = false;
 }
 
 void load_map(Player* p1, Player* p2, Peta* p)
 {
-	(*p).n_brs = kata_to_int(CKata);
+	int brs, kol;
+	brs = kata_to_int(CKata);
 	ADVKATA();
-	(*p).n_kol = kata_to_int(CKata);
+	kol = kata_to_int(CKata);
 	ADVKATA();
+
+	MakePeta(brs, kol, p);
 
 	address_unit u = FirstUnit(p1->list_unit);
 	while(u != NULL)
@@ -122,6 +131,14 @@ void load_map(Player* p1, Player* p2, Peta* p)
 	{
 		AddUnitToPeta(InfoUnit(u), p);
 		u = NextUnit(u);
+	}
+
+	for(int i = 0; i < brs; i++)
+	{
+		for(int j = 0; j < kol; j++)
+		{
+			if(p->m[i][j]->unit != NULL)printf("%c\n", (p->m[i][j])->unit->type);
+		}
 	}
 
 	address_building b = FirstBuilding(p1->list_building);
@@ -139,13 +156,39 @@ void load_map(Player* p1, Player* p2, Peta* p)
 	}
 }
 
-void load(Player* p1, Player* p2, Player* current, Peta* p)
+void load(Player** p1, Player** p2, Player** current, Peta* p, PlayerQ* pq)
 {
 	STARTKATA();
-
 	load_player(p1);
+	printf("p2\n");
 	load_player(p2);
-	load_map(p1, p2, p);
-	if(CKata.TabKata[1] == '1') current = p1;
-	else current = p2;
+	load_map(*p1, *p2, p);
+	CreateEmptyPlayerQ(pq);
+	ListBuilding L = (*p1)->list_building;
+	address_building x = FirstBuilding(L);
+	while(x != NULL)
+	{
+		printf("%d %d %c\n", Absis(x->info->coordinate), Ordinat(x->info->coordinate), x->info->type);
+		x = NextBuilding(x);
+	}
+
+	ListUnit L1 = (*p1)->list_unit;
+	address_unit y = FirstUnit(L1);
+	while(y != NULL)
+	{
+		printf("%d %d %c\n", Absis(y->info->coordinate), Ordinat(y->info->coordinate), y->info->type);
+		y = NextBuilding(y);
+	}
+	if(CKata.TabKata[1] == '1')
+	{
+		*current = *p1;
+		AddPlayer(pq, *p1);
+		AddPlayer(pq, *p2);
+	}
+	else
+	{
+		*current = *p2;
+		AddPlayer(pq, *p2);
+		AddPlayer(pq, *p1);
+	}
 }

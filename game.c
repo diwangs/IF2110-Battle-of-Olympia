@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
+#include "load.h"
 #include "save.h"
 #include "listunit.h"
 #include "listbuilding.h"
@@ -80,6 +81,13 @@ void NewGame(){
     TurnHandler();
 }
 
+void LoadGame()
+{
+	load(&PLAYER1, &PLAYER2, &current, &PETA, &PQ);
+	currentq = FirstPlayerQ(PQ);
+	TurnHandler();
+}
+
 void TurnHandler(){
     // untuk diganti dengan queue
     while(true){
@@ -153,7 +161,7 @@ void PlayerTurn(Player * player) {
     while (!executed) {
         printf("Your Command > ");
         get_cmd();
-
+        
         if (cmpkata(move,Cmd)) {
             MoveHandler(current, currentUnit);
         } else if (cmpkata(undo,Cmd)) {

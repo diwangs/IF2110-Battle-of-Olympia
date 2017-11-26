@@ -15,6 +15,7 @@ int main(){
     printf("Welcome to Battle of Olympia\n");
     printf("Select menu\n");
     printf("1. New Game\n");
+    printf("2. Load Games\n");
 
     // TODO : Insert Load Game
     
@@ -23,5 +24,8 @@ int main(){
     scanf(" %d", &selection);
     if(selection == 1){
         NewGame();
+    }
+    else if(selection == 2){
+        LoadGame();
     }
 }

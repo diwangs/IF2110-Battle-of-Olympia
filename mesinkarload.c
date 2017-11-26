@@ -12,7 +12,7 @@ static FILE * pita;
 static int retval;
 
 void start_load() {
-	pita = fopen("pitakar.txt","r");
+	pita = fopen("pitakar.txt","rb");
 	ADV();
 }
 
