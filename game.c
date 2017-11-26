@@ -32,10 +32,23 @@ void NewGame(){
     int brs_peta, kol_peta;
 
     printf("Baris peta? > ");
-    scanf("%d", &brs_peta);
+    get_cmd();
+    brs_peta = KataToInt(Cmd);
+    while ((brs_peta < 8) || (brs_peta > 15)) {
+        printf("Baris must higher than 7 and lower than 16\n");
+        printf("Baris peta? > ");
+        get_cmd();
+        brs_peta = KataToInt(Cmd);
+    }
     printf("Kol peta? > ");
-    scanf(" %d", &kol_peta);
-    getchar();
+    get_cmd();
+    kol_peta = KataToInt(Cmd);
+    while ((kol_peta < 8) || (kol_peta > 15)) {
+        printf("Kolom must higher than 7 and lower than 16\n");
+        printf("Kol peta? > ");
+        get_cmd();
+        kol_peta = KataToInt(Cmd);
+    }
 
     MakePeta(brs_peta, kol_peta, &PETA);
 
