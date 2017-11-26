@@ -176,7 +176,6 @@ void load(Player** p1, Player** p2, Player** current, Peta* p, PlayerQ* pq)
 {
 	STARTKATA();
 	load_player(p1);
-    printf("%c %d %d %d\n", (*p1)->color, (*p1)->gold, (*p1)->income, (*p1)->upkeep);
 	load_player(p2);
 	load_map(*p1, *p2, p);
 	CreateEmptyPlayerQ(pq);
@@ -184,7 +183,6 @@ void load(Player** p1, Player** p2, Player** current, Peta* p, PlayerQ* pq)
 	address_building x = FirstBuilding(L);
 	while(x != NULL)
 	{
-		printf("%d %d %c\n", Absis(x->info->coordinate), Ordinat(x->info->coordinate), x->info->type);
 		x = NextBuilding(x);
 	}
 
@@ -192,7 +190,6 @@ void load(Player** p1, Player** p2, Player** current, Peta* p, PlayerQ* pq)
 	address_unit y = FirstUnit(L1);
 	while(y != NULL)
 	{
-		printf("%d %d %c\n", Absis(y->info->coordinate), Ordinat(y->info->coordinate), y->info->type);
 		y = NextBuilding(y);
 	}
 	if(CKata.TabKata[1] == '1')
