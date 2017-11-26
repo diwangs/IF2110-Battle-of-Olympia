@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include "game.h"
+#include "mesincmd.h"
+#include "util.h"
 
 int main(){
     int selection;
@@ -21,7 +23,13 @@ int main(){
     
     printf("> ");
 
-    scanf(" %d", &selection);
+    get_cmd();
+    selection = KataToInt(Cmd);
+    while ((selection != 1) && (selection != 2)) {
+        printf("Wrong input!!\n");
+        get_cmd();
+        selection = KataToInt(Cmd);
+    }
     if(selection == 1){
         NewGame();
     }
