@@ -1,3 +1,4 @@
+#include "jam.h"
 #include "load.h"
 #include "listbuilding.h"
 #include "listunit.h"
@@ -172,29 +173,29 @@ void load_map(Player* p1, Player* p2, Peta* p)
 	}
 }
 
+void load_save_time(JAM* J)
+{
+	int sec, min, hour;
+	sec = kata_to_int(CKata);
+	ADVKATA();
+	min = kata_to_int(CKata);
+	ADVKATA();
+	hour = kata_to_int(CKata);
+	ADVKATA();
+
+	*J = MakeJAM(hour, min, sec);
+}
+
 void load(Player** p1, Player** p2, Player** current, Peta* p, PlayerQ* pq)
 {
 	STARTKATA();
 	load_player(p1);
-    printf("%c %d %d %d\n", (*p1)->color, (*p1)->gold, (*p1)->income, (*p1)->upkeep);
 	load_player(p2);
 	load_map(*p1, *p2, p);
 	CreateEmptyPlayerQ(pq);
 	ListBuilding L = (*p1)->list_building;
 	address_building x = FirstBuilding(L);
-	while(x != NULL)
-	{
-		printf("%d %d %c\n", Absis(x->info->coordinate), Ordinat(x->info->coordinate), x->info->type);
-		x = NextBuilding(x);
-	}
 
-	ListUnit L1 = (*p1)->list_unit;
-	address_unit y = FirstUnit(L1);
-	while(y != NULL)
-	{
-		printf("%d %d %c\n", Absis(y->info->coordinate), Ordinat(y->info->coordinate), y->info->type);
-		y = NextBuilding(y);
-	}
 	if(CKata.TabKata[1] == '1')
 	{
 		*current = *p1;
@@ -207,4 +208,8 @@ void load(Player** p1, Player** p2, Player** current, Peta* p, PlayerQ* pq)
 		AddPlayer(pq, *p2);
 		AddPlayer(pq, *p1);
 	}
+	ADVKATA();
+	JAM J;
+	load_save_time(&J);
+	printf("Loaded data from %d:%d:%d", Hour(J), Minute(J), Second(J));
 }

@@ -1,3 +1,4 @@
+#include "jam.h"
 #include "mesinkarsave.h"
 #include "mesinsave.h"
 #include "peta.h"
@@ -5,6 +6,7 @@
 #include "listunit.h"
 #include "player.h"
 #include <stdio.h>
+#include <time.h>
 
 void save_units(ListUnit L)
 {
@@ -85,6 +87,20 @@ void save_map(Peta p)
 	write_separator();
 }
 
+void save_local_time()
+{
+	time_t rawtime;
+   	struct tm *local_time;
+
+   	time(&rawtime);
+
+   	local_time = localtime( &rawtime );
+
+   	char data[NMax];
+   	sprintf(data, "%d %d %d", local_time->tm_sec, local_time->tm_min, local_time->tm_hour);
+   	write_data(data);
+}
+
 void save_game(Player* p1, Player* p2, Player* current, Peta p)
 {
 	init_machine('w');
@@ -97,6 +113,8 @@ void save_game(Player* p1, Player* p2, Player* current, Peta p)
 	save_map(p);
 	if((*current).color == (*p1).color) write_data("P1");
 	else write_data("P2");
+	write_separator();
+	save_local_time();
 	write_separator();
 	write_end();
 	end_machine();
