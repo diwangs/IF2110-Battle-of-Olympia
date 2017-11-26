@@ -33,10 +33,17 @@ void AddUnitToPeta(Unit * u, Peta * peta){
     AddUnitToCoordinate(u, u->coordinate, peta);
 }
 
+void DeleteUnitFromCoordinate(Point c, Peta *peta){
+    peta->m[c.X][c.Y]->unit = NULL;
+}
+
+void DeleteUnitFromPeta(Unit * u, Peta * peta){
+    DeleteUnitFromCoordinate(u->coordinate, peta);
+}
+
 void AddBuildingToCoordinate(Building * b, Point c, Peta *peta){
     peta->m[c.X][c.Y]->building = b;
 }
-
 
 void AddBuildingToPeta(Building * b, Peta * peta){
     AddBuildingToCoordinate(b, b->coordinate, peta);
