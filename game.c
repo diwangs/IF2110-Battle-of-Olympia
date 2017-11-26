@@ -100,7 +100,6 @@ void LoadGame()
 {
     wincondition = false;
 	load(&PLAYER1, &PLAYER2, &current, &PETA, &PQ);
-    getchar();
 	currentq = FirstPlayerQ(PQ);
 	TurnHandler();
 }
@@ -142,6 +141,7 @@ void PrintTurnInfo(Player * player, Unit * currentUnit){
 }
 
 void PlayerTurn(Player * player) {
+    system("clear");
     boolean executed = false;
     int selection;
     int x, y;
@@ -173,7 +173,6 @@ void PlayerTurn(Player * player) {
         printf("=");
     printf("\n");
     Unit * currentUnit = player->list_unit.First->info;
-    system("clear");
     PrintTurnInfo(player, currentUnit);
     PrintPetaNormal(PETA, NULL);
 
