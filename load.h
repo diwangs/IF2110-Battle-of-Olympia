@@ -7,6 +7,10 @@ int kata_to_int(LKata K);
 
 void load_unit(infotypeunit* u, Player* p);
 
+void load_building(infotypebuilding* b, Player* p);
+
 void load_player(Player** p);
+
+void load_map(Player* p1, Player* p2, Peta* p);
 
 void load(Player** p1, Player** p2, Player** current, Peta* p, PlayerQ* pq);

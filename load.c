@@ -133,14 +133,6 @@ void load_map(Player* p1, Player* p2, Peta* p)
 		u = NextUnit(u);
 	}
 
-	for(int i = 0; i < brs; i++)
-	{
-		for(int j = 0; j < kol; j++)
-		{
-			if(p->m[i][j]->unit != NULL)printf("%c\n", (p->m[i][j])->unit->type);
-		}
-	}
-
 	address_building b = FirstBuilding(p1->list_building);
 	while(b != NULL)
 	{
@@ -153,6 +145,30 @@ void load_map(Player* p1, Player* p2, Peta* p)
 	{
 		AddBuildingToPeta(InfoBuilding(b), p);
 		b = NextBuilding(b);
+	}
+
+	while(!EndData)
+	{
+		int pos_x, pos_y;
+		pos_x = kata_to_int(CKata);
+		ADVKATA();
+		pos_y = kata_to_int(CKata);
+		ADVKATA();
+
+		int income = kata_to_int(CKata);
+		ADVKATA();
+
+		char owner = CKata.TabKata[0];
+		ADVKATA();
+
+		char type = CKata.TabKata[0];
+		ADVKATA();
+
+		if(owner == 'Z')
+		{
+			AddBuildingToPeta(MakeBuilding(MakePOINT(pos_x, pos_y),
+				income, NULL, type), p);
+		}
 	}
 }
 
