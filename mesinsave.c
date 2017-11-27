@@ -11,6 +11,7 @@ void init_machine()
 
 void write_word(char word[])
 {
+	/* Tulis tiap karakter dalam word ke dalam file */
 	int i = 0;
 	while(word[i] != '\0')
 	{
@@ -21,6 +22,7 @@ void write_word(char word[])
 
 int read_word(char* string, int pos, char* res)
 {
+	/* Simpan kata dalam string yang berada pada posisi pos ke dalam res */
 	int i = 0;
 	while(string[pos] != ' ' && string[pos] != '\0')
 	{
@@ -31,6 +33,7 @@ int read_word(char* string, int pos, char* res)
 	res[i] = '\0';
 	if(string[pos] == ' ') pos = pos + 1;
 
+	//Mengembalikan posisi kata selanjutnya pada string
 	return pos;
 }
 

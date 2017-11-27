@@ -9,18 +9,13 @@ boolean EndData;
 
 void IgnoreBlank()
 {
-	/* Mengabaikan satu atau beberapa BLANK
-	   I.S. : CC sembarang 
-	   F.S. : CC ≠ BLANK atau CC = MARK */
+	/* Mengabaikan BLANK dan newline */
 	while((CC == BLANK || CC == '\n') && CC != MARK) ADV();
 }
 
 void STARTKATA()
 {
-	/* I.S. : CC sembarang 
-	   F.S. : EndKata = true, dan CC = MARK; 
-	          atau EndKata = false, CKata adalah kata yang sudah diakuisisi,
-	          CC karakter pertama sesudah karakter terakhir kata */
+	/* Inisialisasi mesin kata dan salin kata pertama dari pita bila ada */
 	start_load();
 	IgnoreBlank();
 	if(CC == MARK) EndKata = true;
@@ -39,11 +34,8 @@ void STARTKATA()
 
 void ADVKATA()
 {
-	/* I.S. : CC adalah karakter pertama kata yang akan diakuisisi 
-	   F.S. : CKata adalah kata terakhir yang sudah diakuisisi, 
-	          CC adalah karakter pertama dari kata berikutnya, mungkin MARK
-	          Jika CC = MARK, EndKata = true.		  
-	   Proses : Akuisisi kata menggunakan procedure SalinKata */
+	/* Isi CKata dengan kata sekarang dan buat mesin karakter maju ke kata berikutnya */
+
 	if(CC == MARK) EndKata = true;
 	else if(CC == '|')
 	{
@@ -63,12 +55,7 @@ void ADVKATA()
 
 void SalinKata()
 {
-	/* Mengakuisisi kata, menyimpan dalam CKata
-	   I.S. : CC adalah karakter pertama dari kata
-	   F.S. : CKata berisi kata yang sudah diakuisisi; 
-	          CC = BLANK atau CC = MARK; 
-	          CC adalah karakter sesudah karakter terakhir yang diakuisisi.
-	          Jika panjang kata melebihi NMax, maka sisa kata "dipotong" */
+	/* Menyalin kata yang sekarang sedang ditunjuk oleh mesin karakter ke dalam CKata */
 	CKata.length = 0;
 	while(CC != MARK && CC != BLANK && CKata.length < NMax && CC != '|')
 	{
