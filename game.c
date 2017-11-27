@@ -159,6 +159,8 @@ void PlayerTurn(Player * player) {
     // income
     current->gold += current->income;
 	
+    system("clear");
+    
     // refill movp + heal + reset can_attack
     address_unit u = current->list_unit.First;
     while(u != NULL){
@@ -173,7 +175,6 @@ void PlayerTurn(Player * player) {
         printf("=");
     printf("\n");
     Unit * currentUnit = player->list_unit.First->info;
-    system("clear");
     PrintTurnInfo(player, currentUnit);
     PrintPetaNormal(PETA, NULL);
 
