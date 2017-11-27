@@ -18,10 +18,12 @@ void start_save(char mode)
 
 void write(char c)
 {
+	//Menuliskan karakter c kedalam file
   	fprintf(pita, "%c", c);
 }
 
 void end_save()
 {
+	//Tutup file output
 	fclose(pita);
 }

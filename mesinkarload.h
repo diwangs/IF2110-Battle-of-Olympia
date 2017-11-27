@@ -15,10 +15,6 @@ void start_load();
 /* Initialize mesin kata untuk load */
 
 void ADV();
-/* Pita dimajukan satu karakter. 
-   I.S. : Karakter pada jendela = CC, CC != MARK
-   F.S. : CC adalah karakter berikutnya dari CC yang lama, 
-          CC mungkin = MARK
-          Jika  CC = MARK maka EOP akan menyala (true) */
+/* Pita dimajukan satu karakter, bila ditemukan MARK, maka EOP menjadi true */
 
 #endif

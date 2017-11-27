@@ -9,6 +9,7 @@
 
 int kata_to_int(LKata K)
 {
+	//Convert bilangan dalam bentuk string menjadi integer
 	int res = 0;
 	for(int i = 0; i < K.length; i++)
 	{
@@ -21,6 +22,7 @@ int kata_to_int(LKata K)
 
 void load_unit(infotypeunit* u, Player* p)
 {
+	//Ambil data-data yang dibutuhkan untuk membuat 1 unit dari savefile
 	int max_health = kata_to_int(CKata);
 	ADVKATA();
 	int health = kata_to_int(CKata);
@@ -47,12 +49,15 @@ void load_unit(infotypeunit* u, Player* p)
 	char type = CKata.TabKata[0];
 	ADVKATA();
 	ADVKATA();
+
+	//Buat unit sesuai data yang diterima dari savefile
 	*u = MakeUnit(max_health, health, maxmove, move, attack, att_type,
 		can_attack, MakePOINT(pos_x, pos_y), price, is_dead, type, p);
 }
 
 void load_building(infotypebuilding* b, Player* p)
 {
+	//Ambil semua atribut building dari savefile
 	int pos_x, pos_y;
 	pos_x = kata_to_int(CKata);
 	ADVKATA();
@@ -64,11 +69,13 @@ void load_building(infotypebuilding* b, Player* p)
 	char type = CKata.TabKata[0];
 	ADVKATA();
 
+	//Gunakan atribut hasil load untuk membuat building
 	*b = MakeBuilding(MakePOINT(pos_x, pos_y), income, p, type);
 }
 
 void load_player(Player** p)
 {
+	//Load data dasar milik player (gold, income, upkeep, dan warna)
 	if(!EndData)
 	{
 		int gold, income, upkeep;
@@ -79,19 +86,24 @@ void load_player(Player** p)
 		upkeep = kata_to_int(CKata);
 		ADVKATA();
 		char color = CKata.TabKata[0];
+
+		//Buat player baru sesuai data dalam savefile
 		*p = CreatePlayer(color);
 		(*p)->gold = gold;
 		(*p)->income = income;
 		(*p)->upkeep = upkeep;
 	}
 
+	//Siapkan list kosong untuk menyimpan daftar unit dan building milik player
 	CreateEmptyListUnit(&((*p)->list_unit));
 	CreateEmptyListBuilding(&((*p)->list_building));
 	ADVKATA();
 	EndData = false;
 
+	//Load data unit hingga ditemukan karakter '|' yang berfungsi sebagai separator antar tipe data
 	while(!EndData)
 	{
+		//Baca data mengenai unit dari savefile, buat sebuah unit baru, dan masukkan ke dalam list unit milik player
 		infotypeunit unit;
 		load_unit(&unit, *p);
         unit->owner = *p;
@@ -100,8 +112,10 @@ void load_player(Player** p)
 
 	EndData = false;
 
+	//Load data building hingga ditemukan karakter '|' yang berfungsi sebagai separator antar tipe data
 	while(!EndData)
 	{
+		//Baca data mengenai tiap building dari savefile, buat building sesuai data tersebut, masukkan ke dalam list building milik player
 		Building* building;
 		load_building(&building, *p);
 		InsVLastListBuilding(&((*p)->list_building), building);
@@ -112,14 +126,17 @@ void load_player(Player** p)
 
 void load_map(Player* p1, Player* p2, Peta* p)
 {
+	//Baca data ukuran map
 	int brs, kol;
 	brs = kata_to_int(CKata);
 	ADVKATA();
 	kol = kata_to_int(CKata);
 	ADVKATA();
 
+	//Buat peta sesuai ukuran yang dibaca
 	MakePeta(brs, kol, p);
 
+	//Tandai lokasi semua unit milik player1 dan player2 pada peta
 	address_unit u = FirstUnit(p1->list_unit);
 	while(u != NULL)
 	{
@@ -134,6 +151,7 @@ void load_map(Player* p1, Player* p2, Peta* p)
 		u = NextUnit(u);
 	}
 
+	//Tandai lokasi semua building milik player1 dan player2 pada peta
 	address_building b = FirstBuilding(p1->list_building);
 	while(b != NULL)
 	{
@@ -148,6 +166,7 @@ void load_map(Player* p1, Player* p2, Peta* p)
 		b = NextBuilding(b);
 	}
 
+	//Load data building yang tidak dimiliki siapapun pada peta
 	while(!EndData)
 	{
 		int pos_x, pos_y;
@@ -165,6 +184,7 @@ void load_map(Player* p1, Player* p2, Peta* p)
 		char type = CKata.TabKata[0];
 		ADVKATA();
 
+		//owner == 'Z' menandakan bahwa building tidak dimiliki siapapun
 		if(owner == 'Z')
 		{
 			AddBuildingToPeta(MakeBuilding(MakePOINT(pos_x, pos_y),
@@ -175,6 +195,7 @@ void load_map(Player* p1, Player* p2, Peta* p)
 
 void load_save_time(JAM* J)
 {
+	//Load waktu kapan savefile yang akan diload dibuat
 	int sec, min, hour;
 	sec = kata_to_int(CKata);
 	ADVKATA();
@@ -188,14 +209,14 @@ void load_save_time(JAM* J)
 
 void load(Player** p1, Player** p2, Player** current, Peta* p, PlayerQ* pq)
 {
+	//Load semua data yang dibutuhkan untuk memulai permainan
 	STARTKATA();
 	load_player(p1);
 	load_player(p2);
 	load_map(*p1, *p2, p);
 	CreateEmptyPlayerQ(pq);
-	ListBuilding L = (*p1)->list_building;
-	address_building x = FirstBuilding(L);
 
+	//Inisialisasi pula player queue untuk memastikan urutan turn sama seperti saat save
 	if(CKata.TabKata[1] == '1')
 	{
 		*current = *p1;
@@ -209,6 +230,8 @@ void load(Player** p1, Player** p2, Player** current, Peta* p, PlayerQ* pq)
 		AddPlayer(pq, *p1);
 	}
 	ADVKATA();
+
+	//Print waktu savefile yang digunakan dibuat
 	JAM J;
 	load_save_time(&J);
 	printf("Loaded data from %d:%d:%d", Hour(J), Minute(J), Second(J));
